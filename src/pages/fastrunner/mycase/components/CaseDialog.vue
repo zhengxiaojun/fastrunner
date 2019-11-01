@@ -102,9 +102,6 @@
             },
             response: {
                 require: false
-            },
-            opt: {
-                require: false
             }
         },
         methods: {
@@ -307,7 +304,7 @@
                 }],
             }
         },
-        name: "ApiBody"
+        name: "CaseDialog"
     }
 </script>
 

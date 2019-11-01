@@ -95,6 +95,7 @@ export const runDebugtalk = params => {
 };
 
 export const getTree = (url, params) => {
+    console.log(url);
     return axios.get('/api/fastrunner/tree/' + url + '/', params).then(res => res.data)
 };
 
@@ -243,7 +244,6 @@ export const getVariablesPaginationBypage = params => {
     return axios.get('/api/fastrunner/variables/', params).then(res => res.data)
 };
 
-
 export const updateVariables = (url, params) => {
     return axios.patch('/api/fastrunner/variables/' + url + '/', params).then(res => res.data)
 };
@@ -254,6 +254,39 @@ export const deleteVariables = url => {
 
 export const delAllVariabels = params => {
     return axios.delete('/api/fastrunner/variables/', params).then(res => res.data)
+};
+
+// LevelTag API
+export const addLevelTag = params => {
+    return axios.post('/api/fastrunner/leveltag/', params).then(res => res.data)
+};
+
+export const getLevelTagList = params => {
+    return axios.get('/api/fastrunner/leveltag/', params).then(res => res.data)
+};
+
+export const getLevelTagParentList = params => {
+    return axios.get('/api/fastrunner/leveltag/parentinfo/', params).then(res => res.data)
+};
+
+export const getSingleLevelTag = url => {
+    return axios.get('/api/fastrunner/leveltag/' + url + '/').then(res => res.data)
+};
+
+export const getLevelTagPaginationBypage = params => {
+    return axios.get('/api/fastrunner/leveltag/', params).then(res => res.data)
+};
+
+export const updateLevelTag = (url, params) => {
+    return axios.patch('/api/fastrunner/leveltag/' + url + '/', params).then(res => res.data)
+};
+
+export const deleteLevelTag = url => {
+    return axios.delete('/api/fastrunner/leveltag/' + url + '/').then(res => res.data)
+};
+
+export const delAllLevelTag = params => {
+    return axios.delete('/api/fastrunner/leveltag/', params).then(res => res.data)
 };
 
 export const reportList = params => {

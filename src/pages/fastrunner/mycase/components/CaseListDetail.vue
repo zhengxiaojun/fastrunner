@@ -15,12 +15,12 @@
                         <span class="block-summary-description">{{scope.row.name}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="接口地址">
+                <el-table-column label="接口地址" width="350">
                     <template slot-scope="scope">
                         <span class="block_url">{{scope.row.url}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="请求方法">
+                <el-table-column label="请求方法" width="100">
                     <template slot-scope="scope">
                         <div v-if="scope.row.method.toUpperCase() === 'POST' ">
                             <span class="block-method block_method_post block_method_color">POST</span>
@@ -48,6 +48,11 @@
                         <div v-if="scope.row.method.toUpperCase()=== 'OPTIONS' ">
                             <span class="block-method block_method_options block_method_color">OPTIONS</span>
                         </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="层级标签">
+                    <template slot-scope="scope">
+                        <el-tag type="success">{{scope.row.relation_name}}</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
@@ -87,7 +92,7 @@
         components: {
             Report
         },
-        name: "ApiList",
+        name: "CaseListDetail",
         props: {
             host: {
                 require: true
@@ -156,6 +161,10 @@
                         this.$api.delAllAPI({
                             data: this.selectAPI
                         }).then(resp => {
+                            this.$notify.success({
+                                message: '删除成功',
+                                duration: 1500
+                            });
                             this.search = '';
                             this.getAPIList();
                         })
@@ -183,6 +192,10 @@
                         'name': value
                     }).then(resp => {
                         if (resp.success) {
+                            this.$notify.success({
+                                message: '复制成功',
+                                duration: 1500
+                            });
                             this.getAPIList();
                         } else {
                             this.$message.error(resp.msg);
@@ -215,7 +228,6 @@
                     }
                 }).then(res => {
                     this.apiData = res;
-                    console.log(res);
                 })
             },
             handleCurrentChange(val) {
@@ -240,6 +252,10 @@
                 }).then(() => {
                     this.$api.delAPI(index).then(resp => {
                         if (resp.success) {
+                            this.$notify.success({
+                                message: '删除成功',
+                                duration: 1500
+                            });
                             this.search = "";
                             this.getAPIList();
                         } else {

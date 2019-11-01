@@ -39,8 +39,18 @@
                         }]
                     },
                     {
+                        name: "层级列表",
+                        url: "LevelTagList",
+                        code: "&#xe74a;"
+                    },
+                    {
                         name: "用例列表",
                         url: "CaseList",
+                        code: "&#xe74a;"
+                    },
+                    {
+                        name: "套件列表",
+                        url: "SuiteList",
                         code: "&#xe74a;"
                     },
                     {

@@ -2,89 +2,46 @@
     <div>
         <div style="margin-left: 200px;">
             <el-radio-group v-model="dataType">
-                <el-radio
-                    v-for="item of dataOptions"
-                    :label="item.label"
-                    :key="item.value"
-                >{{item.value}}
+                <el-radio v-for="item of dataOptions" :label="item.label" :key="item.value">{{item.value}}
                 </el-radio>
             </el-radio-group>
         </div>
         <div style="margin-top: 5px">
-            <el-table
-                highlight-current-row
-                :cell-style="{paddingTop: '4px', paddingBottom: '4px'}"
-                strpe
-                :height="height"
-                :data="dataType === 'data' ? formData: paramsData"
-                style="width: 100%;"
-                @cell-mouse-enter="cellMouseEnter"
-                @cell-mouse-leave="cellMouseLeave"
-                v-show="dataType !== 'json' "
-            >
-                <el-table-column
-                    label="请求Key"
-                    width="250">
+            <el-table highlight-current-row :cell-style="{paddingTop: '4px', paddingBottom: '4px'}" strpe :height="height"
+                :data="dataType === 'data' ? formData: paramsData" style="width: 100%;" @cell-mouse-enter="cellMouseEnter"
+                @cell-mouse-leave="cellMouseLeave" v-show="dataType !== 'json' ">
+                <el-table-column label="请求Key" width="250">
                     <template slot-scope="scope">
                         <el-input clearable v-model="scope.row.key" placeholder="Key"></el-input>
                     </template>
                 </el-table-column>
 
-                <el-table-column
-                    v-if="dataType === 'data' "
-                    label="类型"
-                    width="120">
+                <el-table-column v-if="dataType === 'data' " label="类型" width="120">
                     <template slot-scope="scope">
 
                         <el-select v-model="scope.row.type">
-                            <el-option
-                                v-for="item in dataTypeOptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            >
+                            <el-option v-for="item in dataTypeOptions" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
 
                     </template>
                 </el-table-column>
 
-                <el-table-column
-                    label="请求Value"
-                    width="350">
+                <el-table-column label="请求Value" width="350">
                     <template slot-scope="scope">
-                        <el-input
-                            v-show="scope.row.type !== 5"
-                            clearable
-                            v-model="scope.row.value"
-                            placeholder="Value"
-                        ></el-input>
+                        <el-input v-show="scope.row.type !== 5" clearable v-model="scope.row.value" placeholder="Value"></el-input>
 
                         <el-row v-show="scope.row.type === 5">
                             <el-col :span="7">
-                                <el-upload
-                                    :show-file-list="false"
-                                    :action="uploadFile(scope.row)"
-                                    :limit="1"
-                                    type="small"
-                                    :file-list="fileList"
-                                    :on-error="uploadError"
-                                    :on-success="uploadSuccess"
-                                >
-                                    <el-button
-                                        size="small"
-                                        type="primary"
-                                        @click="currentIndex=scope.$index"
-                                    >选择文件
+                                <el-upload :show-file-list="false" :action="uploadFile(scope.row)" :limit="1" type="small"
+                                    :file-list="fileList" :on-error="uploadError" :on-success="uploadSuccess">
+                                    <el-button size="small" type="primary" @click="currentIndex=scope.$index">选择文件
                                     </el-button>
                                 </el-upload>
                             </el-col>
 
                             <el-col :span="12">
-                                <el-badge
-                                    :value="scope.row.size"
-                                    style="margin-top: 8px"
-                                >
+                                <el-badge :value="scope.row.size" style="margin-top: 8px">
                                     <i class="el-icon-document" v-text="scope.row.value"></i>
                                 </el-badge>
 
@@ -93,9 +50,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column
-                    label="描述"
-                    width="200">
+                <el-table-column label="描述" width="200">
                     <template slot-scope="scope">
                         <el-input clearable v-model="scope.row.desc" placeholder="参数简要描述"></el-input>
                     </template>
@@ -105,18 +60,10 @@
                 <el-table-column>
                     <template slot-scope="scope">
                         <el-row v-show="scope.row === currentRow">
-                            <el-button
-                                icon="el-icon-circle-plus-outline"
-                                size="mini"
-                                type="info"
-                                @click="handleEdit(scope.$index, scope.row)">
+                            <el-button icon="el-icon-circle-plus-outline" size="mini" type="info" @click="handleEdit(scope.$index, scope.row)">
                             </el-button>
 
-                            <el-button
-                                icon="el-icon-delete"
-                                size="mini"
-                                type="danger"
-                                v-show="scope.$index !== 0"
+                            <el-button icon="el-icon-delete" size="mini" type="danger" v-show="scope.$index !== 0"
                                 @click="handleDelete(scope.$index, scope.row)">
                             </el-button>
                         </el-row>
@@ -126,14 +73,8 @@
             </el-table>
 
 
-            <editor v-model="jsonData"
-                    @init="editorInit"
-                    lang="json"
-                    theme="github"
-                    width="100%"
-                    :height="height"
-                    v-show="dataType === 'json' "
-            >
+            <editor v-model="jsonData" @init="editorInit" lang="json" theme="github" width="100%" :height="height"
+                v-show="dataType === 'json' ">
             </editor>
 
         </div>
@@ -151,7 +92,7 @@
                 require: false
             }
         },
-        computed:{
+        computed: {
             height() {
                 return window.screen.height - 464
             }
@@ -164,7 +105,7 @@
 
 
         watch: {
-            save: function () {
+            save: function() {
                 this.$emit('request', {
                     form: this.parseForm(),
                     json: this.parseJson(),
@@ -177,7 +118,7 @@
                 });
             },
 
-            request: function () {
+            request: function() {
                 if (this.request.length !== 0) {
                     this.formData = this.request.data;
                     this.jsonData = this.request.json_data;
@@ -307,8 +248,7 @@
                 if (this.jsonData !== '') {
                     try {
                         json = JSON.parse(this.jsonData);
-                    }
-                    catch (err) {
+                    } catch (err) {
                         this.$notify.error({
                             title: 'json错误',
                             message: '不是标准的json数据格式',
@@ -402,7 +342,7 @@
 
                 dataOptions: [{
                     label: 'data',
-                    value: '表单',
+                    value: 'form-data',
                 }, {
                     label: 'json',
                     value: 'json',
@@ -410,7 +350,7 @@
                     label: 'params',
                     value: 'params'
                 }],
-                dataType: 'json'
+                dataType: 'params'
             }
         }
     }
@@ -425,5 +365,4 @@
         text-align: left;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
-
 </style>

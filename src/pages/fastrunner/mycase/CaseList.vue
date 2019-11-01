@@ -6,6 +6,7 @@
                 <div style="padding-top: 10px; margin-left: 10px">
                     <el-button type="primary" size="small" icon="el-icon-circle-plus-outline" @click="initAddCase=true">添加用例
                     </el-button>
+                    <el-button type="danger" icon="el-icon-delete" size="mini" @click="del = !del">批量删除</el-button>
                     &nbsp环境:
                     <el-select placeholder="请选择" size="small" tyle="margin-left: -6px" v-model="currentHost">
                         <el-option v-for="item in hostOptions" :key="item.id" :label="item.name" :value="item.name">
@@ -18,7 +19,6 @@
                     </el-select>
                     <!--                    <el-button style="margin-left: 20px" type="primary" icon="el-icon-caret-right" circle size="mini"
                         @click="run = !run"></el-button> -->
-                    <el-button type="danger" icon="el-icon-delete" circle size="mini" @click="del = !del"></el-button>
                 </div>
             </div>
         </el-header>
@@ -27,19 +27,19 @@
             <el-main style="padding: 0;">
                 <el-dialog v-show="addCaseDialogVisible" title="添加用例" :visible.sync="addCaseDialogVisible" width="70%"
                     center>
-                    <api-body nodeId="3" :project="$route.params.id" :response="response" v-on:addSuccess="addSuccess"
-                        :config="currentConfig" :host="currentHost" :opt="'addCase'">
-                    </api-body>
+                    <case-dialog nodeId="3" :project="$route.params.id" :response="response" v-on:addSuccess="addSuccess"
+                        :config="currentConfig" :host="currentHost">
+                    </case-dialog>
                 </el-dialog>
                 <el-dialog v-show="editCaseDialogVisible" title="编辑用例" :visible.sync="editCaseDialogVisible" width="70%"
                     center>
-                    <api-body nodeId="3" :project="$route.params.id" :response="response" v-on:updateSuccess="updateSuccess"
-                        :config="currentConfig" :host="currentHost" :opt="'updateCase'">
-                    </api-body>
+                    <case-dialog nodeId="3" :project="$route.params.id" :response="response" v-on:updateSuccess="updateSuccess"
+                        :config="currentConfig" :host="currentHost">
+                    </case-dialog>
                 </el-dialog>
-                <api-list v-on:api="editAPI" node="3" :project="$route.params.id" :update_list="update_list" :config="currentConfig"
-                    :host="currentHost" :run="run" :del="del">
-                </api-list>
+                <case-list-detail v-on:api="editCase" node="3" :project="$route.params.id" :update_list="update_list"
+                    :config="currentConfig" :host="currentHost" :run="run" :del="del">
+                </case-list-detail>
             </el-main>
         </el-container>
     </el-container>
@@ -47,13 +47,13 @@
 </template>
 
 <script>
-    import ApiBody from './components/ApiBody'
-    import ApiList from './components/ApiList'
+    import CaseDialog from './components/CaseDialog'
+    import CaseListDetail from './components/CaseListDetail'
 
     export default {
         components: {
-            ApiBody,
-            ApiList
+            CaseDialog,
+            CaseListDetail
         },
         computed: {
             initAddCase: {
@@ -152,17 +152,24 @@
         },
         methods: {
             addSuccess() {
+                this.$notify.success({
+                    message: '添加成功',
+                    duration: 1500
+                });
                 this.update_list = !this.update_list;
                 this.addCaseDialogVisible = false;
             },
             updateSuccess() {
+                this.$notify.success({
+                    message: '更新成功',
+                    duration: 1500
+                });
                 this.update_list = !this.update_list;
                 this.editCaseDialogVisible = false;
             },
-            editAPI(response) {
+            editCase(response) {
                 // console.log(JSON.stringify(response));
                 this.editCaseDialogVisible = !this.editCaseDialogVisible;
-                // this.response = response;
                 setTimeout(() => {
                     this.response = response;
                 }, 100);

@@ -8,6 +8,8 @@ import ProjectDetail from '@/pages/project/ProjectDetail'
 import DebugTalk from '@/pages/httprunner/DebugTalk'
 import RecordApi from '@/pages/fastrunner/api/RecordApi'
 import CaseList from '@/pages/fastrunner/mycase/CaseList'
+import SuiteList from '@/pages/fastrunner/mysuite/SuiteList'
+import LevelTagList from '@/pages/fastrunner/leveltag/LevelTagList'
 import AutoTest from '@/pages/fastrunner/case/AutoTest'
 import GlobalEnv from '@/pages/variables/GlobalEnv'
 import ReportList from '@/pages/reports/ReportList'
@@ -81,11 +83,29 @@ export default new Router({
                     }
                 },
                 {
+                    name: 'LevelTagList',
+                    path: 'leveltag_list/:id',
+                    component: LevelTagList,
+                    meta: {
+                        title: '层级列表',
+                        requireAuth: true
+                    }
+                },
+                {
                     name: 'CaseList',
                     path: 'case_list/:id',
                     component: CaseList,
                     meta: {
                         title: '用例列表',
+                        requireAuth: true
+                    }
+                },
+                {
+                    name: 'SuiteList',
+                    path: 'suite_list/:id',
+                    component: SuiteList,
+                    meta: {
+                        title: '套件列表',
                         requireAuth: true
                     }
                 },
