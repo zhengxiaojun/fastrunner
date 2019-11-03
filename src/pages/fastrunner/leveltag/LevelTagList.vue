@@ -13,18 +13,16 @@
         <el-container>
             <el-main style="padding: 0;">
                 <el-dialog v-show="addLevelTagDialogVisible" title="添加层级" :visible.sync="addLevelTagDialogVisible"
-                    width="50%" center>
+                    :close-on-click-modal="false" width="50%" center>
                     <level-tag-dialog v-on:addSuccess="addSuccess" :project="$route.params.id" :opt="opt" :reset="reset"></level-tag-dialog>
                 </el-dialog>
                 <el-dialog v-show="editLevelTagDialogVisible" title="编辑层级" :visible.sync="editLevelTagDialogVisible"
-                    width="50%" center>
+                    :close-on-click-modal="false" width="50%" center>
                     <level-tag-dialog v-on:updateSuccess="updateSuccess" :response="response" :project="$route.params.id"
                         :opt="opt" :reset="reset"></level-tag-dialog>
                 </el-dialog>
                 <level-tag-list-detail v-on:api="editLevelTagHandle" :project="$route.params.id" :update_list="update_list"
                     :del="del"></level-tag-list-detail>
-
-
             </el-main>
         </el-container>
     </el-container>

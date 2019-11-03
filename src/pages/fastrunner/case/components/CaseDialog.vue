@@ -1,35 +1,41 @@
 <template>
     <div>
         <div style="margin-bottom: 10px;">
-            <el-input placeholder="请输入用例名称" v-model="name" clearable>
-                <template slot="prepend">用例名称</template>
+            <el-input style="width: 700px;" placeholder="请输入接口请求地址" v-model="url" clearable>
+                <el-select style="width: 96px" slot="prepend" v-model="method">
+                    <el-option v-for="item of httpOptions" :label="item.label" :value="item.label" :key="item.value">
+                    </el-option>
+                </el-select>
             </el-input>
+            <el-tooltip effect="dark" content="循环次数" placement="bottom">
+                <el-input-number v-model="times" controls-position="right" :min="1" :max="100" style="width: 100px">
+                </el-input-number>
+            </el-tooltip>
+            <el-button type="primary" @click="test_api" v-loading="loading" :disabled="loading">测试请求
+            </el-button>
         </div>
         <div>
-            <div>
-                <el-input style="width: 650px;" placeholder="请输入接口请求地址" v-model="url" clearable>
-                    <el-select style="width: 96px" slot="prepend" v-model="method">
-                        <el-option v-for="item of httpOptions" :label="item.label" :value="item.label" :key="item.value">
-                        </el-option>
-                    </el-select>
-
-                </el-input>
-
-                <el-tooltip effect="dark" content="循环次数" placement="bottom">
-                    <el-input-number v-model="times" controls-position="right" :min="1" :max="100" style="width: 100px">
-                    </el-input-number>
-                </el-tooltip>
-                <el-button type="primary" @click="test_api" v-loading="loading" :disabled="loading">测试请求
-                </el-button>
-                <el-button slot="append" type="success" @click="handleCase">保存
-                </el-button>
-            </div>
+            <el-input style="width: 550px;" placeholder="请输入用例名称" v-model="name" clearable>
+                <template slot="prepend">用例名称</template>
+            </el-input>
+            <el-autocomplete v-model="currentLevelTagName" :fetch-suggestions="searchLevelTags" placeholder="请输入层级名称"
+                @select="handleSelect" clearable>
+                <template slot="prepend">层级名称</template>
+            </el-autocomplete>
+            <el-button slot="append" type="success" @click="handleCase">保存
+            </el-button>
         </div>
-        <div class="request">
-            <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center
-                append-to-body>
-                <report :summary="summary"></report>
-            </el-dialog>
+        <div>
+            <el-row style="margin: 10px;">
+                <el-switch v-model="setting" active-text="高级设置" active-color="#13ce66" inactive-color="#B6B6B6" change="switchSetting">
+                </el-switch>
+            </el-row>
+        </div>
+        <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center
+            append-to-body>
+            <report :summary="summary"></report>
+        </el-dialog>
+        <div class="request" v-show="setting">
             <el-tabs style="margin-left: 20px;" v-model="activeTag">
                 <el-tab-pane label="Header" name="first">
                     <headers :save="save" v-on:header="handleHeader" :header="response ? response.body.header: [] ">
@@ -88,16 +94,10 @@
         },
 
         props: {
-            host: {
-                require: false
-            },
-            nodeId: {
+            leveltagName: {
                 require: false
             },
             project: {
-                require: false
-            },
-            config: {
                 require: false
             },
             response: {
@@ -128,12 +128,12 @@
                 this.hooks = hooks;
                 if (!this.run) {
                     if (this.id === '') {
-                        this.addAPI();
+                        this.addCase();
                     } else {
-                        this.updateAPI();
+                        this.updateCase();
                     }
                 } else {
-                    this.runAPI();
+                    this.runCaseByBody();
                     this.run = false;
                 }
             },
@@ -151,7 +151,6 @@
             validateData() {
                 if (this.url === '') {
                     this.$notify.error({
-                        title: 'url错误',
                         message: '接口请求地址不能为空',
                         duration: 1500
                     });
@@ -160,7 +159,6 @@
 
                 if (this.name === '') {
                     this.$notify.error({
-                        title: 'name错误',
                         message: '用例名称不能为空',
                         duration: 1500
                     });
@@ -171,7 +169,6 @@
             test_validate_data() {
                 if (this.url === '') {
                     this.$notify.error({
-                        title: 'url错误',
                         message: '接口请求地址不能为空',
                         duration: 1500
                     });
@@ -179,10 +176,10 @@
                 }
                 return true
             },
-            runAPI() {
+            runCaseByBody() {
                 if (this.test_validate_data()) {
                     this.loading = true;
-                    this.$api.runSingleAPI({
+                    this.$api.runCaseByBody({
                         header: this.header,
                         request: this.request,
                         extract: this.extract,
@@ -194,9 +191,7 @@
                         name: this.name,
                         times: this.times,
                         project: this.project,
-                        config: this.config,
-                        host: this.host,
-                        nodeId: this.nodeId
+                        leveltag_name: this.currentLevelTagName
                     }).then(resp => {
                         this.summary = resp;
                         this.reportDialogVisible = true;
@@ -206,9 +201,10 @@
                     })
                 }
             },
-            addAPI() {
+            // 添加用例
+            addCase() {
                 if (this.validateData()) {
-                    this.$api.addAPI({
+                    this.$api.addCase({
                         header: this.header,
                         request: this.request,
                         extract: this.extract,
@@ -219,7 +215,7 @@
                         method: this.method,
                         name: this.name.trim(),
                         times: this.times,
-                        nodeId: this.nodeId,
+                        leveltag_name: this.currentLevelTagName,
                         project: this.project,
                     }).then(resp => {
                         if (resp.success) {
@@ -233,9 +229,10 @@
                     })
                 }
             },
-            updateAPI() {
+            // 更新用例
+            updateCase() {
                 if (this.validateData()) {
-                    this.$api.updateAPI(this.id, {
+                    this.$api.updateCase(this.id, {
                         header: this.header,
                         request: this.request,
                         extract: this.extract,
@@ -245,6 +242,8 @@
                         url: this.url.trim(),
                         method: this.method,
                         name: this.name.trim(),
+                        project: this.project,
+                        leveltag_name: this.currentLevelTagName,
                         times: this.times,
                     }).then(resp => {
                         if (resp.success) {
@@ -257,6 +256,43 @@
                         }
                     })
                 }
+            },
+            switchSetting() {
+                this.setting = !this.setting;
+            },
+            getLevelTagNamesByLtype() {
+                this.$api.getLevelTagList({
+                    params: {
+                        project: this.project,
+                        search: '',
+                        ltype: '1'
+                    }
+                }).then(res => {
+                    this.leveltags = res.results;
+                })
+            },
+            searchLevelTags(queryString, cb) {
+                const leveltags = []
+                this.leveltags.forEach(function(item) {
+                    leveltags.push({
+                        "id": item.id,
+                        "value": item.name
+                    });
+                });
+                var results = queryString ? leveltags.filter(this.createStateFilter(queryString)) :
+                    leveltags;
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    cb(results);
+                }, 1000 * Math.random());
+            },
+            createStateFilter(queryString) {
+                return (LevelTag) => {
+                    return (LevelTag.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            handleSelect(item) {
+                this.currentLevelTagName = item.value;
             }
         },
         watch: {
@@ -266,15 +302,20 @@
                 this.url = this.response.body.url;
                 this.times = this.response.body.times;
                 this.id = this.response.id;
+                this.currentLevelTagName = this.response.body.leveltag_name;
             }
         },
         data() {
             return {
+                id: '',
                 loading: false,
                 times: 1,
                 name: '',
                 url: '',
-                id: '',
+                setting: false,
+                currentLevelTagName: '',
+                timeout: null,
+                leveltags: [],
                 header: [],
                 request: [],
                 extract: [],
@@ -303,6 +344,9 @@
                     label: 'PATCH',
                 }],
             }
+        },
+        mounted() {
+            this.getLevelTagNamesByLtype();
         },
         name: "CaseDialog"
     }

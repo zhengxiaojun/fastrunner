@@ -18,7 +18,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="层级类别" prop="ltype">
-                <el-radio-group v-model="form.ltype">
+                <el-radio-group v-model="form.ltype" :disabled="ltype_status">
                     <el-radio label="1">用例</el-radio>
                     <el-radio label="2">套件</el-radio>
                 </el-radio-group>
@@ -52,6 +52,7 @@
                 this.form.level = this.response.level;
                 this.form.parentName = this.response.parentName;
                 this.form.ltype = this.response.ltype;
+                this.ltype_status = true;
             },
             reset: function() {
                 this.$refs.form.resetFields();
@@ -149,12 +150,11 @@
                         this.parent = this.parent.filter(function(item, index, arr) {
                             return item.name != name;
                         });
-                        this.form.parentName = '';
                     })
                 } else {
                     this.parent = [];
-                    this.form.parentName = '';
                 }
+                this.form.parentName = '';
             }
         },
         data() {
@@ -166,7 +166,8 @@
                     parentName: '',
                     ltype: '1'
                 },
-                parent: []
+                parent: [],
+                ltype_status: false
             }
         },
         name: "LevelTagDialog"

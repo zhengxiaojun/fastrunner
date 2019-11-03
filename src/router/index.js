@@ -6,11 +6,9 @@ import Login from '@/pages/auth/Login'
 import ProjectList from '@/pages/project/ProjectList'
 import ProjectDetail from '@/pages/project/ProjectDetail'
 import DebugTalk from '@/pages/httprunner/DebugTalk'
-import RecordApi from '@/pages/fastrunner/api/RecordApi'
-import CaseList from '@/pages/fastrunner/mycase/CaseList'
-import SuiteList from '@/pages/fastrunner/mysuite/SuiteList'
+import CaseList from '@/pages/fastrunner/case/CaseList'
+import SuiteList from '@/pages/fastrunner/suite/SuiteList'
 import LevelTagList from '@/pages/fastrunner/leveltag/LevelTagList'
-import AutoTest from '@/pages/fastrunner/case/AutoTest'
 import GlobalEnv from '@/pages/variables/GlobalEnv'
 import ReportList from '@/pages/reports/ReportList'
 import RecordConfig from '@/pages/fastrunner/config/RecordConfig'
@@ -74,15 +72,6 @@ export default new Router({
                     }
                 },
                 {
-                    name: 'RecordApi',
-                    path: 'api_record/:id',
-                    component: RecordApi,
-                    meta: {
-                        title: '接口模板',
-                        requireAuth: true
-                    }
-                },
-                {
                     name: 'LevelTagList',
                     path: 'leveltag_list/:id',
                     component: LevelTagList,
@@ -106,15 +95,6 @@ export default new Router({
                     component: SuiteList,
                     meta: {
                         title: '套件列表',
-                        requireAuth: true
-                    }
-                },
-                {
-                    name: 'AutoTest',
-                    path: 'auto_test/:id',
-                    component: AutoTest,
-                    meta: {
-                        title: '自动化测试',
                         requireAuth: true
                     }
                 },

@@ -1,6 +1,6 @@
 <template>
 
-    <div >
+    <div>
         <ul class="title-project">
             <li class="title-li" title="Test API Project">
                 <b>{{projectInfo.name}}</b>
@@ -11,12 +11,12 @@
 
         <ul class="project_detail">
             <li class="pull-left">
-                <p class="title-p"><i class="iconfont">&#xe74a;</i> &nbsp;{{projectInfo.api_count}} 个接口</p>
+                <p class="title-p"><i class="iconfont">&#xe74a;</i> &nbsp;{{projectInfo.case_count}} 个用例</p>
                 <p class="desc-p">接口总数</p>
             </li>
 
             <li class="pull-left">
-                <p class="title-p"><i class="iconfont">&#xe6da;</i> &nbsp;{{projectInfo.case_count}} 个用例</p>
+                <p class="title-p"><i class="iconfont">&#xe6da;</i> &nbsp;{{projectInfo.suite_count}} 个套件</p>
                 <p class="desc-p">用例集总数</p>
             </li>
 
@@ -47,7 +47,7 @@
                 <p class="desc-p">测试报告总数</p>
             </li>
 
-          
+
         </ul>
 
 
@@ -91,8 +91,6 @@
 </script>
 
 <style scoped>
-
-
     .desc-p {
         padding-top: 10px;
         font-size: 12px;

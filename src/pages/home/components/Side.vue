@@ -22,26 +22,9 @@
                         code: "&#xe64a;"
                     },
                     {
-                        name: "API 模板",
-                        url: "RecordApi",
-                        code: "&#xe74a;"
-                    },
-                    {
-                        name: "用例管理",
-                        url: "AutoTest",
-                        code: "&#xe6da;",
-                        subs: [{
-                            name: "用例列表",
-                            url: "AutoTest"
-                        }, {
-                            name: "套件列表",
-                            url: "suitelist"
-                        }]
-                    },
-                    {
                         name: "层级列表",
                         url: "LevelTagList",
-                        code: "&#xe74a;"
+                        code: "&#xf79a;"
                     },
                     {
                         name: "用例列表",
@@ -51,7 +34,7 @@
                     {
                         name: "套件列表",
                         url: "SuiteList",
-                        code: "&#xe74a;"
+                        code: "&#xe6da;"
                     },
                     {
                         name: "配置管理",

@@ -135,7 +135,8 @@
                 this.$api.getLevelTagList({
                     params: {
                         project: this.project,
-                        search: this.search
+                        search: this.search,
+                        ltype: ''
                     }
                 }).then(res => {
                     this.apiData = res;
