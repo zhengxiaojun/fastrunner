@@ -6,6 +6,8 @@
                 <div style="padding-top: 10px; margin-left: 10px">
                     <el-button type="primary" size="small" icon="el-icon-circle-plus-outline" @click="initAddCase=true">添加用例
                     </el-button>
+                    <el-button type="success" icon="el-icon-upload" size="mini" @click="importCaseHandle">导入用例</el-button>
+                    <el-button type="infor" icon="el-icon-download" size="mini" @click="exportCaseHandle">导出用例</el-button>
                     <el-button type="danger" icon="el-icon-delete" size="mini" @click="del = !del">批量删除</el-button>
                 </div>
             </div>
@@ -132,11 +134,18 @@
                 this.editCaseDialogVisible = false;
             },
             editCase(response) {
-                // console.log(JSON.stringify(response));
                 this.editCaseDialogVisible = !this.editCaseDialogVisible;
                 setTimeout(() => {
                     this.response = response;
                 }, 100);
+            },
+            importCaseHandle() {
+                // import type: postman: json, excel
+                this.$message.error('开发中');
+            },
+            exportCaseHandle() {
+                // export type: postman: json, excel
+                this.$message.error('开发中');
             }
         },
         name: "CaseList"
