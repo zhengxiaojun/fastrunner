@@ -27,6 +27,11 @@
                         v-on:updateSuccess="updateSuccess">
                     </case-dialog>
                 </el-dialog>
+                <el-dialog v-show="importCaseDialogVisible" title="导入用例" :visible.sync="importCaseDialogVisible" width="70%"
+                    :close-on-click-modal="false" center>
+                    <case-import-dialog :leveltagName="leveltagName" :project="$route.params.id" v-on:importSuccess="importSuccess">
+                    </case-import-dialog>
+                </el-dialog>
                 <case-list-detail v-on:api="editCase" :leveltagName="leveltagName" :project="$route.params.id"
                     :update_list="update_list" :run="run" :del="del">
                 </case-list-detail>
@@ -38,11 +43,14 @@
 
 <script>
     import CaseDialog from './components/CaseDialog'
+    import CaseImportDialog from './components/CaseImportDialog'
+    // import CaseExportDialog from './components/CaseExportDialog'
     import CaseListDetail from './components/CaseListDetail'
 
     export default {
         components: {
             CaseDialog,
+            CaseImportDialog,
             CaseListDetail
         },
         computed: {
@@ -113,7 +121,9 @@
                 response: '',
                 leveltagName: '',
                 addCaseDialogVisible: false,
-                editCaseDialogVisible: false
+                editCaseDialogVisible: false,
+                importCaseDialogVisible: false,
+                exportCaseDialogVisible: false
             }
         },
         methods: {
@@ -140,8 +150,15 @@
                 }, 100);
             },
             importCaseHandle() {
-                // import type: postman: json, excel
-                this.$message.error('开发中');
+                this.importCaseDialogVisible = true;
+            },
+            importSuccess() {
+                this.$notify.success({
+                    message: '导入成功',
+                    duration: 1500
+                });
+                this.update_list = !this.update_list;
+                this.importCaseDialogVisible = false;
             },
             exportCaseHandle() {
                 // export type: postman: json, excel

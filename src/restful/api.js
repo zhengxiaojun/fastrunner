@@ -103,13 +103,19 @@ export const updateTree = (url, params) => {
     return axios.patch('/api/fastrunner/tree/' + url + '/', params).then(res => res.data)
 };
 
-export const uploadFile = url => {
-    return baseUrl + '/api/fastrunner/file/?token=' + store.token
+// FILE API
+
+export const uploadFile = params => {
+    return axios.put('/api/fastrunner/file/', params).then(res => res.data)
 };
 
 // CASE API
 export const addCase = params => {
     return axios.post('/api/fastrunner/case/', params).then(res => res.data)
+};
+
+export const importCase = params => {
+    return axios.post('/api/fastrunner/case/import/', params).then(res => res.data)
 };
 
 export const getCaseList = params => {

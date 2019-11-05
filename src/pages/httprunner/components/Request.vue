@@ -31,7 +31,7 @@
                     <template slot-scope="scope">
                         <el-input v-show="scope.row.type !== 5" clearable v-model="scope.row.value" placeholder="Value"></el-input>
 
-                        <el-row v-show="scope.row.type === 5">
+                        <!-- <el-row v-show="scope.row.type === 5">
                             <el-col :span="7">
                                 <el-upload :show-file-list="false" :action="uploadFile(scope.row)" :limit="1" type="small"
                                     :file-list="fileList" :on-error="uploadError" :on-success="uploadSuccess">
@@ -46,7 +46,7 @@
                                 </el-badge>
 
                             </el-col>
-                        </el-row>
+                        </el-row> -->
                     </template>
                 </el-table-column>
 
