@@ -1,10 +1,10 @@
 <template>
     <div>
         <div>
-            <el-input placeholder="请输入层级名称" clearable v-model="search" style="width: 300px;margin-left: 930px;">
+            <el-input placeholder="请输入层级名称" clearable v-model="search" style="width: 300px;margin-left: 930px;" @change="getLevelTagList">
             </el-input>
-            <el-table highlight-current-row ref="multipleTable" :data="apiData.results.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-                height="530px" :page-size="3" @selection-change="handleSelectionChange" v-loading="loading" align="left">
+            <el-table highlight-current-row ref="multipleTable" :data="apiData.results" height="530px" :page-size="3"
+                @selection-change="handleSelectionChange" v-loading="loading" align="left">
                 <el-table-column type="selection" width="50">
                 </el-table-column>
                 <!-- <el-table-column label="ID">

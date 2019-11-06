@@ -11,14 +11,14 @@
     >
         <el-table-column
             label="变量名"
-            width="300">
+            width="200">
             <template slot-scope="scope">
                 <el-input clearable v-model="scope.row.key" placeholder="接收抽取值后的变量名"></el-input>
             </template>
         </el-table-column>
         <el-table-column
             label="抽取表达式"
-            width="420">
+            width="400">
             <template slot-scope="scope">
                 <el-input clearable v-model="scope.row.value" placeholder="抽取表达式"></el-input>
 

@@ -10,7 +10,7 @@
             <el-table highlight-current-row :cell-style="{paddingTop: '4px', paddingBottom: '4px'}" strpe :height="height"
                 :data="dataType === 'data' ? formData: paramsData" style="width: 100%;" @cell-mouse-enter="cellMouseEnter"
                 @cell-mouse-leave="cellMouseLeave" v-show="dataType !== 'json' ">
-                <el-table-column label="请求Key" width="250">
+                <el-table-column label="请求Key" width="200">
                     <template slot-scope="scope">
                         <el-input clearable v-model="scope.row.key" placeholder="Key"></el-input>
                     </template>
@@ -27,7 +27,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="请求Value" width="350">
+                <el-table-column label="请求Value" width="280">
                     <template slot-scope="scope">
                         <el-input v-show="scope.row.type !== 5" clearable v-model="scope.row.value" placeholder="Value"></el-input>
 

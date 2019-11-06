@@ -1,13 +1,13 @@
 <template>
     <div>
         <div>
-            <el-input placeholder="请输入用例名称" clearable v-model="search" style="width: 300px;margin-left: 930px;">
+            <el-input placeholder="请输入用例名称" clearable v-model="search" style="width: 300px;margin-left: 930px;" @change="getCaseList">
             </el-input>
             <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center>
                 <report :summary="summary"></report>
             </el-dialog>
-            <el-table highlight-current-row ref="multipleTable" :data="apiData.results.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-                height="530px" :page-size="3" @selection-change="handleSelectionChange" v-loading="loading" align="left">
+            <el-table highlight-current-row ref="multipleTable" :data="apiData.results" height="530px" :page-size="3"
+                @selection-change="handleSelectionChange" v-loading="loading" align="left">
                 <el-table-column type="selection" width="50">
                 </el-table-column>
                 <el-table-column label="用例名称">
@@ -141,7 +141,7 @@
             },
             del() {
                 if (this.selectedCase.length !== 0) {
-                    this.$confirm('此操作将永久删除API，是否继续?', '提示', {
+                    this.$confirm('此操作将永久删除选择的用例，是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning',
@@ -232,7 +232,7 @@
 
             //删除用例
             handleDelCase(id) {
-                this.$confirm('此操作将永久删除该API，是否继续?', '提示', {
+                this.$confirm('此操作将永久删除该用例，是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning',

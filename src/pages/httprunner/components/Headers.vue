@@ -11,7 +11,7 @@
     >
         <el-table-column
             label="标签"
-            width="300">
+            width="200">
             <template slot-scope="scope">
                 <el-autocomplete
                     clearable
@@ -25,7 +25,7 @@
 
         <el-table-column
             label="内容"
-            width="400">
+            width="350">
             <template slot-scope="scope">
                 <el-input clearable v-model="scope.row.value" placeholder="头部内容"></el-input>
             </template>

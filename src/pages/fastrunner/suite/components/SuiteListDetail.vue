@@ -1,13 +1,13 @@
 <template>
     <div>
         <div>
-            <el-input placeholder="请输入套件名称" clearable v-model="search" style="width: 300px;margin-left: 930px;">
+            <el-input placeholder="请输入套件名称" clearable v-model="search" style="width: 300px;margin-left: 930px;" @change="getSuiteList">
             </el-input>
             <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center>
                 <report :summary="summary"></report>
             </el-dialog>
-            <el-table highlight-current-row ref="multipleTable" :data="suiteData.results.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-                height="530px" :page-size="3" @selection-change="handleSelectionChange" v-loading="loading" align="left">
+            <el-table highlight-current-row ref="multipleTable" :data="suiteData.results" height="530px" :page-size="3"
+                @selection-change="handleSelectionChange" v-loading="loading" align="left">
                 <el-table-column type="selection" width="50">
                 </el-table-column>
                 <el-table-column label="套件名称">
