@@ -1,18 +1,18 @@
 <template>
     <div>
-        <el-form ref="form" :rules="rules" :model="form" label-width="120px">
+        <el-form ref="form" :rules="rules" :model="form" label-width="120px" v-loading="loading">
             <el-form-item label="导入用例类型" prop="fileType">
                 <el-radio-group v-model="form.fileType">
                     <el-radio label="1">Postman JSON</el-radio>
                     <el-radio label="2">Micsoft EXCEL</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="form.fileType === '1'" label="目录层数" prop="folder_level">
+            <!--            <el-form-item v-if="form.fileType === '1'" label="目录层数" prop="folder_level">
                 <el-radio-group v-model="form.folder_level">
                     <el-radio label="1">1 层</el-radio>
                     <el-radio label="2">2 层</el-radio>
                 </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="层级名称" prop="leveltagName">
                 <el-select v-model="form.leveltagName" placeholder="请选择层级名称">
                     <el-option v-for="item in leveltags" :label="item.name" :key="item.id" :value="item.name"></el-option>

@@ -35,6 +35,16 @@
                         <el-tag type="success" v-if="scope.row.ltype === 2 ">套件</el-tag>
                     </template>
                 </el-table-column>
+                <el-table-column label="创建时间">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.create_time | datetimeFormat}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="更新时间">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.update_time | datetimeFormat}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-row>

@@ -3,7 +3,7 @@
         <el-header style="background-color: #F7F7F7;; padding: 0; height: 50px;">
             <div style="padding-top: 10px; margin-left: 10px; ">
                 <el-row>
-                    <el-col :span="15">
+                    <el-col :span="14">
                         <el-button
                             type="primary"
                             size="small"
@@ -35,7 +35,7 @@
         <el-container>
             <el-main style="padding: 0; margin-left: 10px">
                 <el-row>
-                    <el-col :span="15">
+                    <el-col :span="13">
                         <editor
                             v-model="code.code"
                             @init="editorInit"
@@ -52,7 +52,7 @@
                         </editor>
                     </el-col>
 
-                    <el-col :span="9">
+                    <el-col :span="11">
                         <editor
                             v-model="resp.msg"
                             lang="text"

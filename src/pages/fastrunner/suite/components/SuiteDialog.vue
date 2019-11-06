@@ -67,11 +67,13 @@
                     params: {
                         leveltagName: '',
                         project: this.project,
-                        search: ''
+                        search: '',
+                        need_page: false
                     }
                 }).then(res => {
+                    console.log(res);
                     const data = [];
-                    res.results.forEach((item, index) => {
+                    res.forEach((item, index) => {
                         data.push({
                             label: item.name,
                             key: item.id,

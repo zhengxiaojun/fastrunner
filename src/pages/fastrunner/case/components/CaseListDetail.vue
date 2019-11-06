@@ -212,7 +212,8 @@
                     params: {
                         leveltagName: this.leveltagName,
                         project: this.project,
-                        search: this.search
+                        search: this.search,
+                        need_page: true
                     }
                 }).then(res => {
                     this.apiData = res;
@@ -223,7 +224,8 @@
                     params: {
                         page: this.currentPage,
                         project: this.project,
-                        search: this.search
+                        search: this.search,
+                        need_page: true
                     }
                 }).then(res => {
                     this.apiData = res;

@@ -27,7 +27,7 @@
         <el-container>
             <el-main style="padding: 0; margin-left: 10px">
                 <el-table highlight-current-row :data="projectData.results" border stripe :show-header="projectData.results.length > 0"
-                    highlight-current-row style="width: 100%;">
+                    highlight-current-row style="width: 100%;height: 580px;">
                     <el-table-column label="项目名称" width="250" align="center">
                         <template slot-scope="scope">
                             <span style="font-size: 18px; font-weight: bold; cursor: pointer;color:#19A8FF;" @click="handleCellClick(scope.row)">{{ scope.row.name }}
@@ -80,15 +80,21 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-button style="margin-left: 500px;margin-top: 10px;" type="info" round size="small" icon="el-icon-d-arrow-left"
-                    :disabled="projectData.previous === null " @click="getPagination(projectData.previous)">
-                    上一页
-                </el-button>
+                <div style=" padding-left: 10px;padding-top: 10px;">
+                    <el-row>
+                        <el-col :span="7">
+                            <el-button type="info" round size="small" icon="el-icon-d-arrow-left" :disabled="projectData.previous === null "
+                                @click="getPagination(projectData.previous)">
+                                上一页
+                            </el-button>
 
-                <el-button type="info" round size="small" :disabled="projectData.next === null" @click="getPagination(projectData.next)">
-                    下一页
-                    <i class="el-icon-d-arrow-right"></i>
-                </el-button>
+                            <el-button type="info" round size="small" :disabled="projectData.next === null" @click="getPagination(projectData.next)">
+                                下一页
+                                <i class="el-icon-d-arrow-right"></i>
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                </div>
             </el-main>
         </el-container>
     </el-container>
