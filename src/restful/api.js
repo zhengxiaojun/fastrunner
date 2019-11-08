@@ -334,12 +334,23 @@ export const watchSingleReports = url => {
 export const addTask = params => {
     return axios.post('/api/fastrunner/schedule/', params).then(res => res.data)
 };
-export const taskList = params => {
+
+export const getTaskList = params => {
     return axios.get('/api/fastrunner/schedule/', params).then(res => res.data)
 };
+
 export const getTaskPaginationBypage = params => {
     return axios.get('/api/fastrunner/schedule/', params).then(res => res.data)
 };
+
+export const getSingleTask = id => {
+    return axios.get('/api/fastrunner/schedule/' + id + '/').then(res => res.data)
+};
+
+export const updateTask = (id, params) => {
+    return axios.patch('/api/fastrunner/schedule/' + id + '/', params).then(res => res.data)
+};
+
 export const deleteTasks = url => {
     return axios.delete('/api/fastrunner/schedule/' + url + '/').then(res => res.data)
 };

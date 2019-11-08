@@ -65,8 +65,8 @@
             getCaseList() {
                 this.$api.getCaseList({
                     params: {
-                        leveltagName: '',
                         project: this.project,
+                        leveltagName: '',
                         search: '',
                         need_page: false
                     }

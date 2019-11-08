@@ -201,8 +201,8 @@
             getCaseList() {
                 this.$api.getCaseList({
                     params: {
-                        leveltagName: this.leveltagName,
                         project: this.project,
+                        leveltagName: this.leveltagName,
                         search: this.search,
                         need_page: true
                     }

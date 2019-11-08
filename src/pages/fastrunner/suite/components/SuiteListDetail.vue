@@ -228,7 +228,7 @@
                     } else {
                         this.$message.error(resp.msg)
                     }
-                })
+                });
             },
             // 运行套件
             handleRunSuite(id) {

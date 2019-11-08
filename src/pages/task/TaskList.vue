@@ -13,8 +13,7 @@
             <el-main>
                 <el-dialog v-show="addTaskDialogVisible" title="添加任务" :visible.sync="addTaskDialogVisible" width="60%"
                     :close-on-click-modal="false" center>
-                    <task-dialog :leveltagName="leveltagName" :project="$route.params.id" :response="response"
-                        v-on:addSuccess="addSuccess" :opt="opt" :reset="reset">
+                    <task-dialog :project="$route.params.id" v-on:addSuccess="addSuccess" :opt="opt" :reset="reset">
                     </task-dialog>
                 </el-dialog>
                 <el-dialog v-show="editTaskDialogVisible" title="编辑任务" :visible.sync="editTaskDialogVisible" width="60%"

@@ -2,7 +2,7 @@
     <div class="mytable">
         <el-input class="mysearch" placeholder="请输入任务名称" clearable v-model="search" @change="getTaskList">
         </el-input>
-        <el-table highlight-current-row ref="multipleTable" :data="taskData.results" height="calc(100% - 100px)"
+        <el-table highlight-current-row ref="multipleTable" :data="tasksData.results" height="calc(100% - 100px)"
             @selection-change="handleSelectionChange" v-loading="loading" align="left">
             <el-table-column type="selection" width="50">
             </el-table-column>
@@ -11,27 +11,28 @@
                     <span class="block-summary-description">{{scope.row.name}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="时间配置" width="350">
+            <el-table-column label="时间配置">
                 <template slot-scope="scope">
-                    <span class="block_url">{{scope.row.url}}</span>
+                    <span class="block_url">{{scope.row.kwargs.crontab}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="邮件策略" width="100">
+            <el-table-column label="邮件策略">
                 <template slot-scope="scope">
-                    <span class="block_url">{{scope.row.url}}</span>
+                    <span class="block_url">{{scope.row.kwargs.strategy}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="状态">
                 <template slot-scope="scope">
-                    <el-tag type="success">{{scope.row.leveltag_name}}</el-tag>
+                    <el-tag type="success" v-if="scope.row.enabled === true">启用</el-tag>
+                    <el-tag type="success" v-if="scope.row.enabled === false">未启用</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="接收人">
                 <template slot-scope="scope">
-                    <el-tag type="success">{{scope.row.leveltag_name}}</el-tag>
+                    <div>{{scope.row.kwargs.receiver}}</div>
                 </template>
             </el-table-column>
-            <el-table-column width="320" label="抄送人">
+            <el-table-column label="抄送人">
                 <template slot-scope="scope">
                     <div>{{scope.row.kwargs.copy}}</div>
                 </template>
@@ -50,7 +51,7 @@
             <el-row>
                 <el-col :span="7">
                     <el-pagination :page-size="10" background @current-change="handleCurrentChange" :current-page.sync="currentPage"
-                        layout="total, prev, pager, next, jumper" :total="taskData.count">
+                        layout="total, prev, pager, next, jumper" :total="tasksData.count">
                     </el-pagination>
                 </el-col>
             </el-row>
@@ -80,7 +81,7 @@
                 selectedCase: [],
                 currentRow: '',
                 currentPage: 1,
-                taskData: {
+                tasksData: {
                     count: 0,
                     results: []
                 }
@@ -89,7 +90,7 @@
         watch: {
             update_list() {
                 this.search = '';
-                this.getCaseList();
+                this.getTaskList();
             },
             checked() {
                 if (this.checked) {
@@ -132,12 +133,10 @@
         methods: {
             // 查询任务列表
             getTaskList() {
-                this.$api.taskList({
+                this.$api.getTaskList({
                     params: {
-                        leveltagName: this.leveltagName,
                         project: this.project,
-                        search: this.search,
-                        need_page: true
+                        search: this.search
                     }
                 }).then(resp => {
                     this.tasksData = resp
@@ -145,7 +144,7 @@
             },
             // 编辑任务
             handleRowClick(id) {
-                this.$api.getSingleCase(id).then(resp => {
+                this.$api.getSingleTask(id).then(resp => {
                     if (resp.success) {
                         this.$emit('api', resp);
                     } else {
@@ -190,21 +189,15 @@
             toggleAll() {
                 this.$refs.multipleTable.toggleAllSelection();
             },
-
             toggleClear() {
                 this.$refs.multipleTable.clearSelection();
-            },
-            changeStatus(value) {
-                this.getTaskList();
-                this.addTasks = value;
             },
             cellMouseEnter(row) {
                 this.currentRow = row;
             },
-
             cellMouseLeave(row) {
                 this.currentRow = '';
-            },
+            }
         },
         mounted() {
             this.getTaskList();
