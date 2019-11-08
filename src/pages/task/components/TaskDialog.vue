@@ -82,20 +82,22 @@
             opt: {
                 require: false
             },
+            reset: {
+                require: false
+            }
         },
         data() {
             return {
                 active: 0,
-                controlOnStart: true,
                 current_suite_id: '',
                 suites: [],
                 cases: [],
                 crontab_id: '',
                 ruleForm: {
                     name: '',
-                    switch: true,
+                    switch: false,
                     crontab: '',
-                    strategy: '从不发送',
+                    strategy: '',
                     receiver: '',
                     copy: ''
                 },
@@ -180,6 +182,7 @@
                 this.$api.getSingleSuite(this.current_suite_id).then(resp => {
                     if (resp.success) {
                         this.cases = resp.data.case_list;
+                        console.log(this.cases);
                     } else {
                         this.$message.error(resp.msg)
                     }
@@ -226,7 +229,6 @@
         },
         watch: {
             response: function() {
-                console.log(this.response);
                 this.ruleForm.name = this.response.data.name;
                 this.ruleForm.switch = this.response.data.enable;
                 let kwargs = JSON.parse(this.response.data.kwargs);
@@ -236,21 +238,19 @@
                 this.ruleForm.copy = kwargs.copy;
                 this.current_suite_id = kwargs.suite_id;
                 this.crontab_id = this.response.data.crontab_id;
-                this.selectSuiteChange();
-                // 更新用例顺序
-                let task_case_ids = this.response.args;
-                let new_cases = [];
-                for (let new_case_id of task_case_ids) {
-                    for (let old_case of this.cases) {
-                        if (old_case.case_id === new_case_id) {
-                            new_cases.push({
-                                case_id: new_case_id,
-                                case_name: old_case.case_name
-                            });
-                        }
-                    }
-                }
-                this.cases = new_cases;
+                this.cases = this.response.data.cases;
+            },
+            reset: function() {
+                this.ruleForm.name = '';
+                this.ruleForm.switch = false;
+                this.ruleForm.crontab = '';
+                this.ruleForm.strategy = '';
+                this.ruleForm.receiver = '';
+                this.ruleForm.copy = '';
+                this.current_suite_id = '';
+                this.crontab_id = '';
+                this.cases = [];
+                this.active = 0;
             }
         },
         mounted() {
