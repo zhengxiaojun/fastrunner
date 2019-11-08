@@ -1,55 +1,46 @@
 <template>
     <div class="mytable">
-        <el-input class="mysearch" placeholder="请输入层级名称" clearable v-model="search" @change="getLevelTagList">
+        <el-input class="mysearch" placeholder="请输入任务名称" clearable v-model="search" @change="getTaskList">
         </el-input>
-        <el-table highlight-current-row ref="multipleTable" :data="levelTagData.results" height="calc(100% - 100px)"
-            @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" @selection-change="handleSelectionChange"
-            v-loading="loading" align="left">
+        <el-table highlight-current-row ref="multipleTable" :data="taskData.results" height="calc(100% - 100px)"
+            @selection-change="handleSelectionChange" v-loading="loading" align="left">
             <el-table-column type="selection" width="50">
             </el-table-column>
-            <!-- <el-table-column label="ID">
-                    <template slot-scope="scope">
-                        <span class="block-summary-description">{{scope.row.id}}</span>
-                    </template>
-                </el-table-column> -->
-            <el-table-column label="层级名称">
+            <el-table-column label="任务名称">
                 <template slot-scope="scope">
                     <span class="block-summary-description">{{scope.row.name}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="层级">
+            <el-table-column label="时间配置" width="350">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.level === 1 ">一级</span>
-                    <span v-if="scope.row.level === 2 ">二级</span>
-                    <span v-if="scope.row.level === 3 ">三级</span>
+                    <span class="block_url">{{scope.row.url}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="父级名称">
+            <el-table-column label="邮件策略" width="100">
                 <template slot-scope="scope">
-                    <span>{{scope.row.parentName}}</span>
+                    <span class="block_url">{{scope.row.url}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="层级类别">
+            <el-table-column label="状态">
                 <template slot-scope="scope">
-                    <el-tag type="success" v-if="scope.row.ltype === 1 ">用例</el-tag>
-                    <el-tag type="success" v-if="scope.row.ltype === 2 ">套件</el-tag>
+                    <el-tag type="success">{{scope.row.leveltag_name}}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="创建时间">
+            <el-table-column label="接收人">
                 <template slot-scope="scope">
-                    <span>{{scope.row.create_time | datetimeFormat}}</span>
+                    <el-tag type="success">{{scope.row.leveltag_name}}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="更新时间">
+            <el-table-column width="320" label="抄送人">
                 <template slot-scope="scope">
-                    <span>{{scope.row.update_time | datetimeFormat}}</span>
+                    <div>{{scope.row.kwargs.copy}}</div>
                 </template>
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-row>
-                        <el-button type="info" icon="el-icon-edit" circle size="mini" @click="handleRowClick(scope.row)"></el-button>
-                        <el-button type="danger" icon="el-icon-delete" circle size="mini" @click="handleDelApi(scope.row.id)">
+                        <el-button type="info" icon="el-icon-edit" circle size="mini" @click="handleRowClick(scope.row.id)"></el-button>
+                        <el-button type="danger" icon="el-icon-delete" circle size="mini" @click="delTaskById(scope.row.id)">
                         </el-button>
                     </el-row>
                 </template>
@@ -59,34 +50,37 @@
             <el-row>
                 <el-col :span="7">
                     <el-pagination :page-size="10" background @current-change="handleCurrentChange" :current-page.sync="currentPage"
-                        layout="total, prev, pager, next, jumper" :total="levelTagData.count">
+                        layout="total, prev, pager, next, jumper" :total="taskData.count">
                     </el-pagination>
                 </el-col>
-                <!-- page-size 需要跟后端设置保持一致 -->
             </el-row>
         </div>
     </div>
-
 </template>
 
 <script>
     export default {
         props: {
+            update_list: Boolean,
+            leveltagName: {
+                require: true
+            },
             project: {
                 require: true
             },
-            del: Boolean,
-            update_list: Boolean
+            del: Boolean
         },
         data() {
             return {
                 checked: false,
                 search: '',
                 loading: false,
-                selected: [],
+                reportDialogVisible: false,
+                summary: {},
+                selectedCase: [],
                 currentRow: '',
                 currentPage: 1,
-                levelTagData: {
+                taskData: {
                     count: 0,
                     results: []
                 }
@@ -95,7 +89,7 @@
         watch: {
             update_list() {
                 this.search = '';
-                this.getLevelTagList();
+                this.getCaseList();
             },
             checked() {
                 if (this.checked) {
@@ -105,69 +99,53 @@
                 }
             },
             del() {
-                if (this.selected.length !== 0) {
-                    this.$confirm('此操作将永久删除选择的层级标签，是否继续?', '提示', {
+                if (this.selectedCase.length !== 0) {
+                    this.$confirm('此操作将永久删除选择的用例，是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning',
                     }).then(() => {
-                        this.$api.delAllLevelTag({
-                            data: this.selected
+                        this.$api.delAllCase({
+                            data: this.selectedCase
                         }).then(resp => {
-                            this.search = '';
-                            this.getLevelTagList();
+                            if (resp.success) {
+                                this.$notify.success({
+                                    message: '删除成功',
+                                    duration: 1500
+                                });
+                                this.search = '';
+                                this.getCaseList();
+                            } else {
+                                this.$message.error(resp.msg);
+                            }
                         })
                     })
                 } else {
                     this.$notify.warning({
                         title: '提示',
-                        message: '请至少选择一个层级标签',
+                        message: '请至少选择一个任务!',
                         duration: 1000
                     })
                 }
             }
         },
         methods: {
-            handleSelectionChange(val) {
-                this.selected = val;
-            },
-
-            toggleAll() {
-                this.$refs.multipleTable.toggleAllSelection();
-            },
-
-            toggleClear() {
-                this.$refs.multipleTable.clearSelection();
-            },
-            // 列表
-            getLevelTagList() {
-                this.loading = true;
-                this.$api.getLevelTagList({
+            // 查询任务列表
+            getTaskList() {
+                this.$api.taskList({
                     params: {
+                        leveltagName: this.leveltagName,
                         project: this.project,
                         search: this.search,
-                        ltype: ''
+                        need_page: true
                     }
-                }).then(res => {
-                    this.levelTagData = res;
-                    this.loading = false;
+                }).then(resp => {
+                    this.tasksData = resp
                 })
             },
-            // 下一页
-            handleCurrentChange(val) {
-                this.$api.getLevelTagPaginationBypage({
-                    params: {
-                        page: this.currentPage,
-                        project: this.project,
-                        search: this.search
-                    }
-                }).then(res => {
-                    this.levelTagData = res;
-                })
-            },
-            // 编辑
-            handleRowClick(row) {
-                this.$api.getSingleLevelTag(row.id).then(resp => {
+            // 编辑任务
+            handleRowClick(id) {
+                this.$api.getSingleCase(id).then(resp => {
                     if (resp.success) {
                         this.$emit('api', resp);
                     } else {
@@ -175,40 +153,63 @@
                     }
                 })
             },
-            //删除
-            handleDelApi(id) {
-                this.$confirm('此操作将永久删除该层级标签，是否继续?', '提示', {
+            //删除任务
+            delTaskById(id) {
+                this.$confirm('此操作将永久删除该定时任务，是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning',
                 }).then(() => {
-                    this.$api.deleteLevelTag(id).then(resp => {
+                    this.$api.deleteTasks(id).then(resp => {
                         if (resp.success) {
                             this.$notify.success({
                                 message: '删除成功',
                                 duration: 1500
                             });
                             this.search = "";
-                            this.getLevelTagList();
+                            this.getTaskList();
                         } else {
                             this.$message.error(resp.msg);
                         }
                     })
                 })
             },
+            handleCurrentChange(val) {
+                this.$api.getTaskPaginationBypage({
+                    params: {
+                        page: this.currentPage,
+                        project: this.$route.params.id
+                    }
+                }).then(resp => {
+                    this.tasksData = resp;
+                })
+            },
+            handleSelectionChange(val) {
+                this.selectedCase = val;
+            },
+            toggleAll() {
+                this.$refs.multipleTable.toggleAllSelection();
+            },
 
+            toggleClear() {
+                this.$refs.multipleTable.clearSelection();
+            },
+            changeStatus(value) {
+                this.getTaskList();
+                this.addTasks = value;
+            },
             cellMouseEnter(row) {
                 this.currentRow = row;
             },
 
             cellMouseLeave(row) {
                 this.currentRow = '';
-            }
+            },
         },
         mounted() {
-            this.getLevelTagList();
+            this.getTaskList();
         },
-        name: "LevelTagListDetail"
+        name: "TaskListDetail"
     }
 </script>
 

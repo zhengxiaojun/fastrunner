@@ -233,7 +233,6 @@
             },
             getProjectList() {
                 this.$api.getProjectList().then(resp => {
-                    console.log(resp);
                     this.projectData = resp;
                 })
             },

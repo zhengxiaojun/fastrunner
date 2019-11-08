@@ -12,7 +12,7 @@ import LevelTagList from '@/pages/fastrunner/leveltag/LevelTagList'
 import GlobalEnv from '@/pages/variables/GlobalEnv'
 import ReportList from '@/pages/reports/ReportList'
 import RecordConfig from '@/pages/fastrunner/config/RecordConfig'
-import Tasks from '@/pages/task/Tasks'
+import TaskList from '@/pages/task/TaskList'
 import HostAddress from '@/pages/variables/HostAddress'
 
 Vue.use(Router);
@@ -126,9 +126,9 @@ export default new Router({
                     }
                 },
                 {
-                    name: 'Task',
-                    path: 'tasks/:id',
-                    component: Tasks,
+                    name: 'TaskList',
+                    path: 'task_list/:id',
+                    component: TaskList,
                     meta: {
                         title: '定时任务',
                         requireAuth: true

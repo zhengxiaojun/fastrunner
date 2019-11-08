@@ -1,62 +1,61 @@
 <template>
-    <div>
-        <div>
-            <el-input placeholder="请输入套件名称" clearable v-model="search" style="width: 300px;margin-left: 930px;" @change="getSuiteList">
-            </el-input>
-            <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center>
-                <report :summary="summary"></report>
-            </el-dialog>
-            <el-table highlight-current-row ref="multipleTable" :data="suiteData.results" height="530px" :page-size="3"
-                @selection-change="handleSelectionChange" v-loading="loading" align="left">
-                <el-table-column type="selection" width="50">
-                </el-table-column>
-                <el-table-column label="套件名称">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.name}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="用例个数">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.length}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="创建时间">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.create_time | datetimeFormat}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="更新时间">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.update_time | datetimeFormat}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="层级标签">
-                    <template slot-scope="scope">
-                        <el-tag type="success">{{scope.row.leveltag_name}}</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <el-row>
-                            <el-button type="info" icon="el-icon-edit" circle size="mini" @click="handleRowClick(scope.row)"></el-button>
+    <div class="mytable">
+        <el-input class="mysearch" placeholder="请输入套件名称" clearable v-model="search" @change="getSuiteList">
+        </el-input>
+        <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center
+            :close-on-click-modal="false" append-to-body>
+            <report :summary="summary"></report>
+        </el-dialog>
+        <el-table highlight-current-row ref="multipleTable" :data="suiteData.results" height="calc(100% - 100px)"
+            @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" @selection-change="handleSelectionChange"
+            v-loading="loading" align="left">
+            <el-table-column type="selection" width="50">
+            </el-table-column>
+            <el-table-column label="套件名称">
+                <template slot-scope="scope">
+                    <span>{{scope.row.name}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="用例个数">
+                <template slot-scope="scope">
+                    <span>{{scope.row.length}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="创建时间">
+                <template slot-scope="scope">
+                    <span>{{scope.row.create_time | datetimeFormat}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="更新时间">
+                <template slot-scope="scope">
+                    <span>{{scope.row.update_time | datetimeFormat}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="层级标签">
+                <template slot-scope="scope">
+                    <el-tag type="success">{{scope.row.leveltag_name}}</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-row>
+                        <el-button type="info" icon="el-icon-edit" circle size="mini" @click="handleRowClick(scope.row)"></el-button>
 
-                            <el-button type="success" icon="el-icon-document" circle size="mini" @click="handleCopySuite(scope.row.id)">
-                            </el-button>
+                        <el-button type="success" icon="el-icon-document" circle size="mini" @click="handleCopySuite(scope.row.id)">
+                        </el-button>
 
-                            <el-button type="primary" icon="el-icon-caret-right" circle size="mini" @click="handleRunSuite(scope.row.id)"></el-button>
-                            <el-button type="danger" icon="el-icon-delete" circle size="mini" @click="handleDelSuite(scope.row.id)">
-                            </el-button>
-                        </el-row>
-                    </template>
-                </el-table-column>
-
-            </el-table>
-        </div>
-        <div style=" padding-left: 10px;">
+                        <el-button type="primary" icon="el-icon-caret-right" circle size="mini" @click="handleRunSuite(scope.row.id)"></el-button>
+                        <el-button type="danger" icon="el-icon-delete" circle size="mini" @click="handleDelSuite(scope.row.id)">
+                        </el-button>
+                    </el-row>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="mypagination">
             <el-row>
                 <el-col :span="7">
-                    <el-pagination style="margin-top: 5px" :page-size="10" background @current-change="handleCurrentChange"
-                        :current-page.sync="currentPage" layout="total, prev, pager, next, jumper" :total="suiteData.count">
+                    <el-pagination :page-size="10" background @current-change="handleCurrentChange" :current-page.sync="currentPage"
+                        layout="total, prev, pager, next, jumper" :total="suiteData.count">
                     </el-pagination>
                 </el-col>
                 <!-- page-size 需要跟后端设置保持一致 -->
@@ -87,9 +86,6 @@
             return {
                 checked: false,
                 search: '',
-                reportName: '',
-                asyncs: false,
-                filterText: '',
                 loading: false,
                 reportDialogVisible: false,
                 summary: {},
@@ -103,10 +99,6 @@
             }
         },
         watch: {
-            run() {
-                this.asyncs = false;
-                this.reportName = "";
-            },
             update_list() {
                 this.search = '';
                 this.getSuiteList();
@@ -265,11 +257,29 @@
         mounted() {
             this.getSuiteList();
         },
-        name: "SuiteListDetail",
+        name: "SuiteListDetail"
     }
 </script>
 
 <style scoped>
+    .mytable {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 200px;
+        top: 100px;
+        padding: 0;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
 
+    .mysearch {
+        width: 300px;
+        margin-left: 900px;
+    }
 
+    .mypagination {
+        padding-top: 10px;
+        padding-left: 20px;
+    }
 </style>

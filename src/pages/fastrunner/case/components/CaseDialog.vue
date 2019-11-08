@@ -32,7 +32,7 @@
             </el-row>
         </div>
         <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center
-            append-to-body>
+            :close-on-click-modal="false" append-to-body>
             <report :summary="summary"></report>
         </el-dialog>
         <div class="request" v-show="setting">

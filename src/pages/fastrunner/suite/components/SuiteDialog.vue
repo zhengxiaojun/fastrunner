@@ -25,8 +25,8 @@
                 </el-form-item>
             </el-form>
         </div>
-        <el-button style="margin-top: 12px;" @click="prev" v-if="active === 1">上一步</el-button>
-        <el-button style="margin-top: 12px;" @click="next" v-if="active === 0">下一步</el-button>
+        <el-button type="primary" style="margin-top: 20px;" plain @click="prev" v-if="active === 1">上一步</el-button>
+        <el-button type="primary" style="margin-top: 20px;" plain @click="next" v-if="active === 0">下一步</el-button>
     </div>
 </template>
 
@@ -71,7 +71,6 @@
                         need_page: false
                     }
                 }).then(res => {
-                    console.log(res);
                     const data = [];
                     res.forEach((item, index) => {
                         data.push({

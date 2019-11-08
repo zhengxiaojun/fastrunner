@@ -1,82 +1,82 @@
 <template>
-    <div>
-        <div>
-            <el-input placeholder="请输入用例名称" clearable v-model="search" style="width: 300px;margin-left: 930px;" @change="getCaseList">
-            </el-input>
-            <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center>
-                <report :summary="summary"></report>
-            </el-dialog>
-            <el-table highlight-current-row ref="multipleTable" :data="apiData.results" height="530px" :page-size="3"
-                @selection-change="handleSelectionChange" v-loading="loading" align="left">
-                <el-table-column type="selection" width="50">
-                </el-table-column>
-                <el-table-column label="用例名称">
-                    <template slot-scope="scope">
-                        <span class="block-summary-description">{{scope.row.name}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="接口地址" width="350">
-                    <template slot-scope="scope">
-                        <span class="block_url">{{scope.row.url}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="请求方法" width="100">
-                    <template slot-scope="scope">
-                        <div v-if="scope.row.method.toUpperCase() === 'POST' ">
-                            <span class="block-method block_method_post block_method_color">POST</span>
-                        </div>
+    <div class="mytable">
+        <el-input class="mysearch" placeholder="请输入用例名称" clearable v-model="search" @change="getCaseList">
+        </el-input>
+        <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center
+            :close-on-click-modal="false" append-to-body>
+            <report :summary="summary"></report>
+        </el-dialog>
+        <el-table highlight-current-row ref="multipleTable" :data="caseData.results" height="calc(100% - 100px)"
+            @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" @selection-change="handleSelectionChange"
+            v-loading="loading" align="left">
+            <el-table-column type="selection" width="50">
+            </el-table-column>
+            <el-table-column label="用例名称">
+                <template slot-scope="scope">
+                    <span class="block-summary-description">{{scope.row.name}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="接口地址" width="350">
+                <template slot-scope="scope">
+                    <span class="block_url">{{scope.row.url}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="请求方法" width="100">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.method.toUpperCase() === 'POST' ">
+                        <span class="block-method block_method_post block_method_color">POST</span>
+                    </div>
 
-                        <div v-if="scope.row.method.toUpperCase() === 'GET' ">
-                            <span class="block-method block_method_get block_method_color">GET</span>
-                        </div>
+                    <div v-if="scope.row.method.toUpperCase() === 'GET' ">
+                        <span class="block-method block_method_get block_method_color">GET</span>
+                    </div>
 
-                        <div v-if="scope.row.method.toUpperCase() === 'PUT' ">
-                            <span class="block-method block_method_put block_method_color">PUT</span>
-                        </div>
+                    <div v-if="scope.row.method.toUpperCase() === 'PUT' ">
+                        <span class="block-method block_method_put block_method_color">PUT</span>
+                    </div>
 
-                        <div v-if="scope.row.method.toUpperCase() === 'DELETE' ">
-                            <span class="block-method block_method_delete block_method_color">DELETE</span>
-                        </div>
+                    <div v-if="scope.row.method.toUpperCase() === 'DELETE' ">
+                        <span class="block-method block_method_delete block_method_color">DELETE</span>
+                    </div>
 
-                        <div v-if="scope.row.method.toUpperCase() === 'PATCH' ">
-                            <span class="block-method block_method_patch block_method_color">PATCH</span>
-                        </div>
+                    <div v-if="scope.row.method.toUpperCase() === 'PATCH' ">
+                        <span class="block-method block_method_patch block_method_color">PATCH</span>
+                    </div>
 
-                        <div v-if="scope.row.method.toUpperCase() === 'HEAD' ">
-                            <span class="block-method block_method_head block_method_color">HEAD</span>
-                        </div>
-                        <div v-if="scope.row.method.toUpperCase()=== 'OPTIONS' ">
-                            <span class="block-method block_method_options block_method_color">OPTIONS</span>
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column label="层级标签">
-                    <template slot-scope="scope">
-                        <el-tag type="success">{{scope.row.leveltag_name}}</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <el-row>
-                            <el-button type="info" icon="el-icon-edit" circle size="mini" @click="handleRowClick(scope.row.id)"></el-button>
+                    <div v-if="scope.row.method.toUpperCase() === 'HEAD' ">
+                        <span class="block-method block_method_head block_method_color">HEAD</span>
+                    </div>
+                    <div v-if="scope.row.method.toUpperCase()=== 'OPTIONS' ">
+                        <span class="block-method block_method_options block_method_color">OPTIONS</span>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="层级标签">
+                <template slot-scope="scope">
+                    <el-tag type="success">{{scope.row.leveltag_name}}</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-row>
+                        <el-button type="info" icon="el-icon-edit" circle size="mini" @click="handleRowClick(scope.row.id)"></el-button>
 
-                            <el-button type="success" icon="el-icon-document" circle size="mini" @click="handleCopyAPI(scope.row.id)">
-                            </el-button>
+                        <el-button type="success" icon="el-icon-document" circle size="mini" @click="handleCopyAPI(scope.row.id)">
+                        </el-button>
 
-                            <el-button type="primary" icon="el-icon-caret-right" circle size="mini" @click="handleRunCaseById(scope.row.id)"></el-button>
-                            <el-button type="danger" icon="el-icon-delete" circle size="mini" @click="handleDelCase(scope.row.id)">
-                            </el-button>
-                        </el-row>
-                    </template>
-                </el-table-column>
+                        <el-button type="primary" icon="el-icon-caret-right" circle size="mini" @click="handleRunCaseById(scope.row.id)"></el-button>
+                        <el-button type="danger" icon="el-icon-delete" circle size="mini" @click="handleDelCase(scope.row.id)">
+                        </el-button>
+                    </el-row>
+                </template>
+            </el-table-column>
 
-            </el-table>
-        </div>
-        <div style=" padding-left: 10px;">
+        </el-table>
+        <div class="mypagination">
             <el-row>
                 <el-col :span="7">
-                    <el-pagination style="margin-top: 5px" :page-size="10" background @current-change="handleCurrentChange"
-                        :current-page.sync="currentPage" layout="total, prev, pager, next, jumper" :total="apiData.count">
+                    <el-pagination :page-size="10" background @current-change="handleCurrentChange" :current-page.sync="currentPage"
+                        layout="total, prev, pager, next, jumper" :total="caseData.count">
                     </el-pagination>
                 </el-col>
                 <!-- page-size 需要跟后端设置保持一致 -->
@@ -92,7 +92,6 @@
         components: {
             Report
         },
-        name: "CaseListDetail",
         props: {
             run: Boolean,
             update_list: Boolean,
@@ -108,26 +107,19 @@
             return {
                 checked: false,
                 search: '',
-                reportName: '',
-                asyncs: false,
-                filterText: '',
                 loading: false,
                 reportDialogVisible: false,
                 summary: {},
                 selectedCase: [],
                 currentRow: '',
                 currentPage: 1,
-                apiData: {
+                caseData: {
                     count: 0,
                     results: []
                 }
             }
         },
         watch: {
-            run() {
-                this.asyncs = false;
-                this.reportName = "";
-            },
             update_list() {
                 this.search = '';
                 this.getCaseList();
@@ -170,7 +162,6 @@
                 }
             }
         },
-
         methods: {
             handleCopyAPI(id) {
                 this.$prompt('请输入新用例名称', '提示', {
@@ -216,7 +207,7 @@
                         need_page: true
                     }
                 }).then(res => {
-                    this.apiData = res;
+                    this.caseData = res;
                 })
             },
             handleCurrentChange(val) {
@@ -228,7 +219,7 @@
                         need_page: true
                     }
                 }).then(res => {
-                    this.apiData = res;
+                    this.caseData = res;
                 })
             },
 
@@ -291,11 +282,30 @@
         },
         mounted() {
             this.getCaseList();
-        }
+        },
+        name: "CaseListDetail"
     }
 </script>
 
 <style scoped>
+    .mytable {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 200px;
+        top: 100px;
+        padding: 0;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
 
+    .mysearch {
+        width: 300px;
+        margin-left: 900px;
+    }
 
+    .mypagination {
+        padding-top: 10px;
+        padding-left: 20px;
+    }
 </style>

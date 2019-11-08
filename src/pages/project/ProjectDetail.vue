@@ -15,7 +15,7 @@
             </li>
             <li class="pull-left">
                 <p class="title-p"><i class="iconfont">&#xe6da;</i> &nbsp;{{projectInfo.suite_count}} 个套件</p>
-                <p class="desc-p">用例集总数</p>
+                <p class="desc-p">套件总数</p>
             </li>
             <li class="pull-left">
                 <p class="title-p"><i class="iconfont">&#xee32;</i> &nbsp;{{projectInfo.leveltag_count}} 个层级标签</p>

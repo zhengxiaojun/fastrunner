@@ -37,6 +37,11 @@
                         code: "&#xe6da;"
                     },
                     {
+                        name: "定时任务",
+                        url: "TaskList",
+                        code: "&#xe61e;"
+                    },
+                    {
                         name: "配置管理",
                         url: "RecordConfig",
                         code: "&#xee32;"
@@ -55,11 +60,6 @@
                         name: "驱动代码",
                         url: "DebugTalk",
                         code: "&#xe7ca;"
-                    },
-                    {
-                        name: "定时任务",
-                        url: "Task",
-                        code: "&#xe61e;"
                     },
                     {
                         name: "历史报告",
