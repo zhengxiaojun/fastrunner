@@ -1,10 +1,10 @@
 <template>
     <div>
         <el-form ref="form" :rules="rules" :model="form" label-width="120px" v-loading="loading">
-            <el-form-item label="导入用例类型" prop="fileType">
+            <el-form-item label="用例类型" prop="fileType">
                 <el-radio-group v-model="form.fileType">
                     <el-radio label="1">Postman JSON</el-radio>
-                    <el-radio label="2">Micsoft EXCEL</el-radio>
+                    <el-radio label="2" disabled>Micsoft EXCEL</el-radio>
                 </el-radio-group>
             </el-form-item>
             <!--            <el-form-item v-if="form.fileType === '1'" label="目录层数" prop="folder_level">
@@ -28,7 +28,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="success" @click="importCase">开始导入</el-button>
-                <el-button type="primary" @click="reset">重置</el-button>
+                <el-button type="primary" @click="clear">重置</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -45,6 +45,13 @@
             },
             response: {
                 require: false
+            },
+            reset: Boolean
+        },
+        watch: {
+            reset: function() {
+                this.$refs['form'].resetFields();
+                this.$refs.upload.clearFiles();
             }
         },
         methods: {
@@ -105,7 +112,7 @@
                     })
                 }
             },
-            reset() {
+            clear() {
                 this.$refs['form'].resetFields();
                 this.$refs.upload.clearFiles();
             },
@@ -148,7 +155,6 @@
             return {
                 loading: false,
                 leveltags: [],
-                limit: 1,
                 filename: '',
                 fileList: [],
                 form: {

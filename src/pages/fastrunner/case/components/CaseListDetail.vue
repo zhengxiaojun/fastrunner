@@ -6,6 +6,10 @@
             :close-on-click-modal="false" append-to-body>
             <report :summary="summary"></report>
         </el-dialog>
+        <el-dialog v-show="exportCaseDialogVisible" title="导出用例" :visible.sync="exportCaseDialogVisible"
+            :close-on-click-modal="false" center append-to-body>
+            <case-export-dialog :selectedCase="selectedCase"></case-export-dialog>
+        </el-dialog>
         <el-table highlight-current-row ref="multipleTable" :data="caseData.results" height="calc(100% - 100px)"
             @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" @selection-change="handleSelectionChange"
             v-loading="loading" align="left">
@@ -87,10 +91,12 @@
 
 <script>
     import Report from '../../../reports/DebugReport'
+    import CaseExportDialog from './CaseExportDialog'
 
     export default {
         components: {
-            Report
+            Report,
+            CaseExportDialog
         },
         props: {
             run: Boolean,
@@ -101,7 +107,8 @@
             project: {
                 require: true
             },
-            del: Boolean
+            del: Boolean,
+            daochu: Boolean
         },
         data() {
             return {
@@ -109,6 +116,7 @@
                 search: '',
                 loading: false,
                 reportDialogVisible: false,
+                exportCaseDialogVisible: false,
                 summary: {},
                 selectedCase: [],
                 currentRow: '',
@@ -160,6 +168,9 @@
                         duration: 1000
                     })
                 }
+            },
+            daochu() {
+                this.exportCaseDialogVisible = true;
             }
         },
         methods: {

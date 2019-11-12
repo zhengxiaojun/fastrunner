@@ -5,6 +5,7 @@
                 <div style="padding-top: 10px; margin-left: 20px">
                     <el-button type="primary" size="small" icon="el-icon-circle-plus-outline" @click="addTaskHandle">添加任务
                     </el-button>
+                    <el-button type="danger" icon="el-icon-delete" size="mini" @click="del = !del">批量删除</el-button>
                 </div>
             </div>
         </el-header>

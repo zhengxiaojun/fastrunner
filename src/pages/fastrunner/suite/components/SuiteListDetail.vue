@@ -137,7 +137,6 @@
                 }
             }
         },
-
         methods: {
             handleCopySuite(id) {
                 this.$prompt('请输入新套件名称', '提示', {

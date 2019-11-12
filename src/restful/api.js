@@ -351,8 +351,12 @@ export const updateTask = (id, params) => {
     return axios.patch('/api/fastrunner/schedule/' + id + '/', params).then(res => res.data)
 };
 
-export const deleteTasks = url => {
-    return axios.delete('/api/fastrunner/schedule/' + url + '/').then(res => res.data)
+export const delTaskById = id => {
+    return axios.delete('/api/fastrunner/schedule/' + id + '/').then(res => res.data)
+};
+
+export const delAllTask = params => {
+    return axios.delete('/api/fastrunner/schedule/', params).then(res => res.data)
 };
 
 // HOST API

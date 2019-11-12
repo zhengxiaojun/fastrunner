@@ -78,7 +78,7 @@
                 loading: false,
                 reportDialogVisible: false,
                 summary: {},
-                selectedCase: [],
+                selectedTask: [],
                 currentRow: '',
                 currentPage: 1,
                 tasksData: {
@@ -100,14 +100,14 @@
                 }
             },
             del() {
-                if (this.selectedCase.length !== 0) {
-                    this.$confirm('此操作将永久删除选择的用例，是否继续?', '提示', {
+                if (this.selectedTask.length !== 0) {
+                    this.$confirm('此操作将永久删除选择的任务，是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning',
                     }).then(() => {
-                        this.$api.delAllCase({
-                            data: this.selectedCase
+                        this.$api.delAllTask({
+                            data: this.selectedTask
                         }).then(resp => {
                             if (resp.success) {
                                 this.$notify.success({
@@ -115,7 +115,7 @@
                                     duration: 1500
                                 });
                                 this.search = '';
-                                this.getCaseList();
+                                this.getTaskList();
                             } else {
                                 this.$message.error(resp.msg);
                             }
@@ -159,7 +159,7 @@
                     cancelButtonText: '取消',
                     type: 'warning',
                 }).then(() => {
-                    this.$api.deleteTasks(id).then(resp => {
+                    this.$api.delTaskById(id).then(resp => {
                         if (resp.success) {
                             this.$notify.success({
                                 message: '删除成功',
@@ -184,7 +184,7 @@
                 })
             },
             handleSelectionChange(val) {
-                this.selectedCase = val;
+                this.selectedTask = val;
             },
             toggleAll() {
                 this.$refs.multipleTable.toggleAllSelection();

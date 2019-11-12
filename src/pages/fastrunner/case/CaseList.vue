@@ -6,7 +6,7 @@
                     <el-button type="primary" size="small" icon="el-icon-circle-plus-outline" @click="initAddCase=true">添加用例
                     </el-button>
                     <el-button type="success" icon="el-icon-upload" size="mini" @click="importCaseHandle">导入用例</el-button>
-                    <el-button type="infor" icon="el-icon-download" size="mini" @click="exportCaseHandle">导出用例</el-button>
+                    <el-button type="warning" icon="el-icon-download" size="mini" @click="daochu = !daochu">导出用例</el-button>
                     <el-button type="danger" icon="el-icon-delete" size="mini" @click="del = !del">批量删除</el-button>
                 </div>
             </div>
@@ -26,13 +26,14 @@
                         v-on:updateSuccess="updateSuccess">
                     </case-dialog>
                 </el-dialog>
-                <el-dialog v-show="importCaseDialogVisible" title="导入用例" :visible.sync="importCaseDialogVisible" width="70%"
+                <el-dialog v-show="importCaseDialogVisible" title="导入用例" :visible.sync="importCaseDialogVisible"
                     :close-on-click-modal="false" center>
-                    <case-import-dialog :leveltagName="leveltagName" :project="$route.params.id" v-on:importSuccess="importSuccess">
+                    <case-import-dialog :leveltagName="leveltagName" :project="$route.params.id" v-on:importSuccess="importSuccess"
+                        :reset="reset">
                     </case-import-dialog>
                 </el-dialog>
                 <case-list-detail v-on:api="editCase" :leveltagName="leveltagName" :project="$route.params.id"
-                    :update_list="update_list" :run="run" :del="del">
+                    :update_list="update_list" :run="run" :del="del" :daochu="daochu">
                 </case-list-detail>
             </el-main>
         </el-container>
@@ -43,7 +44,6 @@
 <script>
     import CaseDialog from './components/CaseDialog'
     import CaseImportDialog from './components/CaseImportDialog'
-    // import CaseExportDialog from './components/CaseExportDialog'
     import CaseListDetail from './components/CaseListDetail'
 
     export default {
@@ -117,12 +117,13 @@
                 update_list: false,
                 run: false,
                 del: false,
+                reset: false,
+                daochu: false,
                 response: '',
                 leveltagName: '',
                 addCaseDialogVisible: false,
                 editCaseDialogVisible: false,
-                importCaseDialogVisible: false,
-                exportCaseDialogVisible: false
+                importCaseDialogVisible: false
             }
         },
         methods: {
@@ -150,6 +151,7 @@
             },
             importCaseHandle() {
                 this.importCaseDialogVisible = true;
+                this.reset = !this.reset;
             },
             importSuccess() {
                 this.$notify.success({
@@ -158,10 +160,6 @@
                 });
                 this.update_list = !this.update_list;
                 this.importCaseDialogVisible = false;
-            },
-            exportCaseHandle() {
-                // export type: postman: json, excel
-                this.$message.error('开发中');
             }
         },
         name: "CaseList"
