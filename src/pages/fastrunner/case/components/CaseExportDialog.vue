@@ -63,28 +63,47 @@
             },
             exportCase() {
                 if (this.validateData()) {
-                    if (this.selectedCase.length === 0) {
-                        this.$notify.warning({
-                            title: '提示',
-                            message: '请至少选择一个用例',
-                            duration: 1000
-                        })
-                    } else {
-                        this.downloadFlag = true;
-                        this.exportFileName = `${this.form.fileName}.csv`;
-                        console.log(this.selectedCase);
-
-                        const rows = [];
-                        for (let row of this.selectedCase) {
-                            row.body = JSON.stringify(row.body);
-                            rows.push(row);
+                    if (this.form.exportMethod === '2') {
+                        if (this.selectedCase.length === 0) {
+                            this.$notify.warning({
+                                title: '提示',
+                                message: '请至少选择一个用例',
+                                duration: 1000
+                            })
+                        } else {
+                            this.loading = true;
+                            this.downloadFlag = true;
+                            this.json_data = this.parseBody(this.selectedCase)
+                            this.loading = false;
                         }
-                        this.json_data = rows;
+                    } else {
+                        this.loading = true;
+                        this.$api.getCaseList({
+                            params: {
+                                project: this.$route.params.id,
+                                leveltagName: '',
+                                search: '',
+                                need_page: false
+                            }
+                        }).then(res => {
+                            this.json_data = this.parseBody(res);
+                            this.loading = false;
+                            this.downloadFlag = true;
+                        })
                     }
+                    this.exportFileName = `${this.form.fileName}.csv`;
                 }
             },
             hide() {
                 this.downloadFlag = false;
+            },
+            parseBody(rows) {
+                const p_rows = [];
+                for (let row of rows) {
+                    row.body = JSON.stringify(row.body);
+                    p_rows.push(row);
+                }
+                return p_rows;
             },
             download(data) {
                 const blob = new Blob([data]);
