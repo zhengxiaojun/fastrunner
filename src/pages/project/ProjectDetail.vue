@@ -44,12 +44,18 @@
                 <p class="desc-p">配置总数</p>
             </li>
         </ul>
+        <div>
+            <myechart :projectInfo="projectInfo"></myechart>
+        </div>
     </div>
 </template>
 
 <script>
+    import myechart from './myechart'
     export default {
-        name: "ProjectDetail",
+        components: {
+            myechart: myechart
+        },
         data() {
             return {
                 projectInfo: {}
@@ -69,7 +75,6 @@
                     duration: 1000
                 });
             },
-
             getProjectDetail() {
                 const pk = this.$route.params.id;
                 this.$api.getProjectDetail(pk).then(res => {
@@ -79,7 +84,8 @@
         },
         mounted() {
             this.getProjectDetail();
-        }
+        },
+        name: "ProjectDetail"
     }
 </script>
 
