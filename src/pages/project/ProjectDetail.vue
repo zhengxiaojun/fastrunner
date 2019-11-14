@@ -8,38 +8,38 @@
             </li>
         </ul>
         <ul class="project_detail">
-            <li class="pull-left">
+            <li class="pull-left" style="background-color: #85DE38;">
                 <p class="title-p"><i class="iconfont">&#xe74a;</i> &nbsp;{{projectInfo.case_count}} 个用例</p>
                 <p class="desc-p">用例总数</p>
                 <a href="/fastrunner/case_list/1"></a>
             </li>
-            <li class="pull-left">
+            <li class="pull-left" style="background-color: #4BD0D5;">
                 <p class="title-p"><i class="iconfont">&#xe6da;</i> &nbsp;{{projectInfo.suite_count}} 个套件</p>
                 <p class="desc-p">套件总数</p>
             </li>
-            <li class="pull-left">
+            <li class="pull-left" style="background-color: #E3C939;">
                 <p class="title-p"><i class="iconfont">&#xee32;</i> &nbsp;{{projectInfo.leveltag_count}} 个层级标签</p>
                 <p class="desc-p">层级标签总数</p>
             </li>
-            <li class="pull-left">
+            <li class="pull-left" style="background-color: #E8A9A9;">
                 <p class="title-p"><i class="iconfont">&#xe66e;</i> &nbsp;{{projectInfo.report_count}} 个报告</p>
                 <p class="desc-p">测试报告总数</p>
             </li>
         </ul>
         <ul class="project_detail">
-            <li class="pull-left">
+            <li class="pull-left" style="background-color: #86E6DC;">
                 <p class="title-p"><i class="iconfont">&#xe61e;</i> &nbsp;{{projectInfo.task_count}} 个任务</p>
                 <p class="desc-p">定时任务总数</p>
             </li>
-            <li class="pull-left">
+            <li class="pull-left" style="background-color: #61BDE4;">
                 <p class="title-p"><i class="iconfont">&#xe692;</i> &nbsp;{{projectInfo.variables_count}} 对变量</p>
                 <p class="desc-p">全局变量总数</p>
             </li>
-            <li class="pull-left">
+            <li class="pull-left" style="background-color: #868AE4;">
                 <p class="title-p"><i class="iconfont">&#xe609;</i> &nbsp;{{projectInfo.host_count}} 套环境</p>
                 <p class="desc-p">环境总数</p>
             </li>
-            <li class="pull-left">
+            <li class="pull-left" style="background-color: #E692F1;">
                 <p class="title-p"><i class="iconfont">&#xee32;</i> &nbsp;{{projectInfo.config_count}} 套配置</p>
                 <p class="desc-p">配置总数</p>
             </li>
@@ -93,7 +93,7 @@
     .desc-p {
         padding-top: 10px;
         font-size: 12px;
-        color: #b6b6b6;
+        color: #607d8b;
     }
 
     .title-p {
