@@ -20,6 +20,7 @@
         title: {
           text: ''
         },
+        color: ['#3398DB'],
         tooltip: {},
         xAxis: {
           data: ['用例数', '套件数', '层级标签数', '报告数', '任务数']
