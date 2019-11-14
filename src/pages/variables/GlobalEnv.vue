@@ -76,7 +76,7 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column>
+                        <el-table-column label="操作">
                             <template slot-scope="scope">
                                 <el-row v-show="currentRow === scope.row">
                                     <el-button type="info" icon="el-icon-edit" circle size="mini" @click="handleEditVariables(scope.row)"></el-button>
@@ -250,15 +250,19 @@
                     if (valid) {
                         this.dialogVisible = false;
                         this.$api.addVariables(this.variablesForm).then(resp => {
-                            if (!resp.success) {
-                                this.$message.info({
+                            if (resp.success) {
+                                this.$notify.success({
                                     message: resp.msg,
-                                    duration: 1000
-                                })
-                            } else {
+                                    duration: 1500
+                                });
                                 this.variablesForm.key = '';
                                 this.variablesForm.value = '';
                                 this.getVariablesList();
+                            } else {
+                                this.$message.error({
+                                    message: resp.msg,
+                                    duration: 1000
+                                });
                             }
                         })
 
@@ -272,13 +276,19 @@
                     if (valid) {
                         this.editdialogVisible = false;
                         this.$api.updateVariables(this.editVariablesForm.id, this.editVariablesForm).then(resp => {
-                            if (!resp.success) {
-                                this.$message.info({
+                            if (resp.success) {
+                                this.$notify.success({
+                                    message: resp.msg,
+                                    duration: 1500
+                                });
+                                this.variablesForm.key = '';
+                                this.variablesForm.value = '';
+                                this.getVariablesList();
+                            } else {
+                                this.$message.error({
                                     message: resp.msg,
                                     duration: 1000
-                                })
-                            } else {
-                                this.getVariablesList();
+                                });
                             }
                         })
                     }
