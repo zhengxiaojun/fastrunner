@@ -8,7 +8,7 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="导出方式" prop="exportMethod">
-                <el-radio-group v-model="form.exportMethod">
+                <el-radio-group v-model="form.exportMethod" @change="hide">
                     <el-radio label="1">全部的用例</el-radio>
                     <el-radio label="2">选中的用例</el-radio>
                 </el-radio-group>
@@ -69,7 +69,8 @@
                                 title: '提示',
                                 message: '请至少选择一个用例',
                                 duration: 1000
-                            })
+                            });
+                            this.downloadFlag = false;
                         } else {
                             this.loading = true;
                             this.downloadFlag = true;
@@ -134,6 +135,7 @@
                 },
                 exportFileName: '',
                 downloadFlag: false,
+                json_data: [],
                 rules: {
                     fileType: [{
                         required: true,
