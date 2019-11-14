@@ -1,7 +1,8 @@
 <template>
     <div>
         <div style="margin-bottom: 10px;">
-            <el-input style="width: 700px;" placeholder="请输入接口请求地址" v-model="url" clearable>
+            <el-input style="width: 700px;" placeholder="请输入接口请求地址, 例如 http://test.com/ 或 $host/test.com" v-model="url"
+                clearable>
                 <el-select style="width: 96px" slot="prepend" v-model="method">
                     <el-option v-for="item of httpOptions" :label="item.label" :value="item.label" :key="item.value">
                     </el-option>

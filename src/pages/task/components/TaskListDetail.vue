@@ -1,6 +1,7 @@
 <template>
     <div class="mytable">
         <el-input class="mysearch" placeholder="请输入任务名称" clearable v-model="search" @change="getTaskList">
+            <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-table highlight-current-row ref="multipleTable" :data="tasksData.results" height="calc(100% - 100px)"
             @selection-change="handleSelectionChange" v-loading="loading" align="left">

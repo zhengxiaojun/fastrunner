@@ -22,6 +22,11 @@
                         code: "&#xe64a;"
                     },
                     {
+                        name: "全局变量",
+                        url: "GlobalEnv",
+                        code: "&#xe692;"
+                    },
+                    {
                         name: "层级列表",
                         url: "LevelTagList",
                         code: "&#xf79a;"
@@ -41,21 +46,16 @@
                         url: "TaskList",
                         code: "&#xe61e;"
                     },
-                    {
-                        name: "配置管理",
-                        url: "RecordConfig",
-                        code: "&#xee32;"
-                    },
-                    {
-                        name: "全局变量",
-                        url: "GlobalEnv",
-                        code: "&#xe692;"
-                    },
-                    {
-                        name: "域名管理",
-                        url: "HostIP",
-                        code: "&#xe609;"
-                    },
+                    // {
+                    //     name: "配置管理",
+                    //     url: "RecordConfig",
+                    //     code: "&#xee32;"
+                    // },
+                    // {
+                    //     name: "域名管理",
+                    //     url: "HostIP",
+                    //     code: "&#xe609;"
+                    // },
                     {
                         name: "驱动代码",
                         url: "DebugTalk",

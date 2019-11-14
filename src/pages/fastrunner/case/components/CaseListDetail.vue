@@ -1,6 +1,7 @@
 <template>
     <div class="mytable">
         <el-input class="mysearch" placeholder="请输入用例名称" clearable v-model="search" @change="getCaseList">
+            <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-dialog title="调试报告" v-if="reportDialogVisible" :visible.sync="reportDialogVisible" width="65%" center
             :close-on-click-modal="false" append-to-body>
