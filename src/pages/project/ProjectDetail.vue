@@ -119,7 +119,7 @@
         text-indent: 20px;
         display: inline-block;
         height: 90px;
-        width: calc(20% - 1.5px);
+        width: calc(23% - 1.5px);
         border: 1px solid #ddd;
     }
 
