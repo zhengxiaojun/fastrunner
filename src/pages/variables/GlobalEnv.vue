@@ -2,12 +2,10 @@
     <el-container>
         <el-header style="background: #fff; padding: 0;">
             <div class="nav-api-header">
-                <div style="padding-top: 10px; margin-left: 20px">
-                    <el-button type="primary" size="small" icon="el-icon-circle-plus-outline" @click="dialogVisible=true">新增变量
+                <div style="padding-top: 10px; margin-left: 10px">
+                    <el-button type="primary" size="small" icon="el-icon-circle-plus-outline" @click="dialogVisible=true">添加变量
                     </el-button>
-
-                    <el-button v-show="variablesData.count !== 0 " style="margin-left: 20px" type="danger" icon="el-icon-delete"
-                        circle size="mini" @click="delSelectionVariables"></el-button>
+                    <el-button type="danger" icon="el-icon-delete" size="mini" @click="delSelectionVariables">批量删除</el-button>
 
                     <el-dialog title="添加变量" :visible.sync="dialogVisible" width="30%" align="center">
                         <el-form :model="variablesForm" :rules="rules" ref="variablesForm" label-width="100px" class="project">
