@@ -1,28 +1,17 @@
 <template>
     <el-container>
-        <el-header style="background-color: #F7F7F7;; padding: 0; height: 50px;">
-            <div style="padding-top: 10px; margin-left: 10px; ">
+        <el-header style="background-color: #F7F7F7; padding: 0; height: 45px;">
+            <div style="padding-top: 5px; margin-left: 10px; ">
                 <el-row>
                     <el-col :span="14">
-                        <el-button
-                            type="primary"
-                            size="small"
-                            icon="el-icon-circle-check-outline"
-                            @click="handleConfirm"
-                            round
-                        >
+                        <el-button type="primary" size="small" icon="el-icon-circle-check-outline" @click="handleConfirm"
+                            round>
                             点击保存
                         </el-button>
 
-                        <el-button
-                            icon="el-icon-caret-right"
-                            type="info"
-                            size="small"
-                            @click="handleRunCode"
-                            round
-                        >
+                        <el-button icon="el-icon-caret-right" type="info" size="small" @click="handleRunCode" round>
                             在线运行
-                       </el-button>
+                        </el-button>
                     </el-col>
                     <el-col :span="9">
                         <h2>调试控制台</h2>
@@ -33,37 +22,21 @@
         </el-header>
 
         <el-container>
-            <el-main style="padding: 0; margin-left: 10px">
+            <el-main style="padding: 0; margin-left: 5px;margin-right: 5px;height: 640px;">
                 <el-row>
                     <el-col :span="13">
-                        <editor
-                            v-model="code.code"
-                            @init="editorInit"
-                            lang="python"
-                            theme="monokai"
-                            width="100%"
-                            :height="codeHeight"
-                            :options="{
+                        <editor v-model="code.code" @init="editorInit" lang="python" theme="monokai" width="100%"
+                            height="640" :options="{
                                  enableSnippets:true,
                                  enableBasicAutocompletion: true,
                                  enableLiveAutocompletion: true
-                             }"
-                        >
+                             }">
                         </editor>
                     </el-col>
-
                     <el-col :span="11">
-                        <editor
-                            v-model="resp.msg"
-                            lang="text"
-                            theme="monokai"
-                            width="100%"
-                            :height="codeHeight"
-                        >
+                        <editor v-model="resp.msg" lang="text" theme="monokai" width="100%" height="640">
                         </editor>
                     </el-col>
-
-
                 </el-row>
 
             </el-main>
@@ -124,7 +97,6 @@
 </script>
 
 <style scoped>
-
     .ace_editor {
         position: relative;
         overflow: hidden;
@@ -133,5 +105,4 @@
         text-align: left;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
-
 </style>

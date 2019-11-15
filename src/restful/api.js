@@ -201,6 +201,7 @@ export const copyConfig = (url, params) => {
 export const deleteConfig = url => {
     return axios.delete('/api/fastrunner/config/' + url + '/').then(res => res.data)
 };
+
 export const delAllConfig = params => {
     return axios.delete('/api/fastrunner/config/', params).then(res => res.data)
 };
